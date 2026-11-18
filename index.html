@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>[hidden]{display:none!important} body{margin:0} img{max-width:100%}</style>
+<title>Bangkok i Koh Phangan</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: one narrow column, phone first. A sticky "where are you" switch flips the whole page between Bangkok and Koh Phangan; each view = map, day plan, places by area. */
+:root{
+  --bg:#f2f5f1; --surface:#ffffff; --fg:#14302c; --muted:#5b726d; --line:#d6e0dc;
+  --sea:#cfe5e8; --sea-line:#b6d6db; --land:#eef0e1; --land-line:#9fb3a3; --city:#ecefe6; --river:#a9d2da;
+  --zone:#f5c542; --accent:#0f6e69; --warn-bg:#fff4d6; --warn-line:#e4b632; --warn-fg:#4a3500;
+  --c-plaze:#0d8aa0; --c-jedzenie:#d0522a; --c-kawa:#8a5a3b; --c-wellness:#8a63c8; --c-sport:#2f7a3a; --c-impreza:#d23c88; --c-prom:#34495e;
+  --display:"Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --body:"Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0e1918; --surface:#152321; --fg:#e6efec; --muted:#9db1ac; --line:#26393a;
+  --sea:#11303a; --sea-line:#1a4250; --land:#1e2b24; --land-line:#3f5a4c; --city:#18241f; --river:#1d4a57;
+  --zone:#e3b43a; --accent:#5cc6be; --warn-bg:#2e2610; --warn-line:#a8832a; --warn-fg:#f3dfa6;
+  --c-plaze:#34b6cc; --c-jedzenie:#f07a4f; --c-kawa:#c38d68; --c-wellness:#ad8cec; --c-sport:#5db46a; --c-impreza:#f16aac; --c-prom:#8fa6bd;
+  color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --bg:#0e1918; --surface:#152321; --fg:#e6efec; --muted:#9db1ac; --line:#26393a;
+  --sea:#11303a; --sea-line:#1a4250; --land:#1e2b24; --land-line:#3f5a4c; --city:#18241f; --river:#1d4a57;
+  --zone:#e3b43a; --accent:#5cc6be; --warn-bg:#2e2610; --warn-line:#a8832a; --warn-fg:#f3dfa6;
+  --c-plaze:#34b6cc; --c-jedzenie:#f07a4f; --c-kawa:#c38d68; --c-wellness:#ad8cec; --c-sport:#5db46a; --c-impreza:#f16aac; --c-prom:#8fa6bd;
+  color-scheme:dark; }
+*{box-sizing:border-box}
+html{scroll-padding-top:calc(env(safe-area-inset-top, 0px) + 72px)}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.5;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:20px 48px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top, 0px);z-index:10;background:var(--bg)}
+.wrap{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.1}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+h1{font-size:clamp(32px,9vw,52px);font-weight:800;letter-spacing:-.01em}
+.lead{margin:8px 0 0;color:var(--muted);max-width:60ch}
+a{color:var(--accent)}
+button{font:inherit;color:inherit;cursor:pointer}
+
+.switch{position:sticky;top:env(safe-area-inset-top, 0px);z-index:5;background:var(--bg);padding-block:8px;margin-block:-8px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sw{border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:10px 12px;text-align:left;display:flex;flex-direction:column;gap:1px}
+.sw b{font-family:var(--display);font-size:20px;font-weight:800;line-height:1.1}
+.sw span{font-size:12px;color:var(--muted)}
+.sw[aria-pressed="true"]{background:var(--fg);border-color:var(--fg);color:var(--bg)}
+.sw[aria-pressed="true"] span{color:var(--bg);opacity:.75}
+
+.notes{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:620px){.notes{grid-template-columns:1fr}}
+.note{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;min-width:0}
+.note h2{font-size:17px;font-weight:600;display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.note p{margin:0}
+.note ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
+.note.key{border-color:var(--c-prom);border-width:2px}
+.swatch{width:22px;height:10px;border-radius:5px;background:var(--zone);opacity:.75;flex:none}
+.warn{background:var(--warn-bg);border:1px solid var(--warn-line);color:var(--warn-fg);border-radius:12px;padding:12px 14px}
+.warn strong{font-weight:700}
+
+.view{display:flex;flex-direction:column;gap:22px}
+.view[hidden]{display:none}
+.vhead h2{font-size:clamp(28px,7vw,38px);font-weight:800}
+.vhead p{margin:4px 0 0;color:var(--muted)}
+
+.controls{display:flex;flex-direction:column;gap:8px}
+.row{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.row::-webkit-scrollbar{display:none}
+.row-label{font-size:12px;color:var(--muted);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.tab,.chip{flex:none;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 13px;font-size:14px;white-space:nowrap}
+.tab[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.chip{display:flex;align-items:center;gap:7px}
+.chip .dot{width:10px;height:10px;border-radius:50%;background:var(--c)}
+.chip[aria-pressed="true"]{border-color:var(--fg);box-shadow:inset 0 0 0 1px var(--fg)}
+.sw:focus-visible,.tab:focus-visible,.chip:focus-visible,a:focus-visible,.item-btn:focus-visible,.close:focus-visible,.num:focus-visible,.pin:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.mapframe{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--line)}
+.mapframe.php{background:var(--sea)}
+.mapframe.bkk{background:var(--city)}
+svg.map{display:block;width:100%;height:auto;touch-action:manipulation}
+.island{fill:var(--land);stroke:var(--land-line);stroke-width:2;stroke-linejoin:round}
+.zone{fill:none;stroke:var(--zone);stroke-linecap:round;stroke-linejoin:round;opacity:.38}
+.coast{fill:none;stroke:var(--sea-line);stroke-width:14;stroke-linejoin:round}
+.river{fill:none;stroke:var(--river);stroke-width:16;stroke-linecap:round;stroke-linejoin:round}
+.lbl{fill:var(--muted);font-family:var(--body);font-weight:600;letter-spacing:.02em;paint-order:stroke;stroke-linejoin:round}
+.php .lbl{stroke:var(--sea)}
+.bkk .lbl{stroke:var(--city)}
+.lbl.water{fill:var(--accent);font-style:italic;font-weight:500}
+.pin{cursor:pointer}
+.pin circle.b{stroke:var(--surface)}
+.pin text{fill:#fff;font-family:var(--body);font-weight:600;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.pin .ring{fill:none;stroke:var(--fg);opacity:0}
+.pin.sel .ring{opacity:1}
+.pin.off{display:none}
+.card{position:relative;background:var(--surface);border:1px solid var(--fg);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;margin-top:-10px}
+.card h3{font-size:18px;font-weight:600;padding-right:34px}
+.card p{margin:0}
+.card[hidden]{display:none}
+.close{position:absolute;top:6px;right:6px;width:34px;height:34px;border-radius:50%;border:none;background:transparent;font-size:22px;line-height:1;color:var(--muted)}
+.meta{display:flex;gap:8px;align-items:center;font-size:12px;color:var(--muted);flex-wrap:wrap}
+.cat{display:inline-flex;align-items:center;gap:5px}
+.cat::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c)}
+.must{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:var(--zone);color:#2b2200;border-radius:4px;padding:1px 6px}
+.go{color:var(--accent);font-weight:600;text-decoration:none}
+.go:hover{text-decoration:underline}
+.more{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.more a{font-size:13px;border:1px solid var(--line);border-radius:999px;padding:3px 10px;text-decoration:none;color:var(--fg);background:var(--bg)}
+.hint{font-size:13px;color:var(--muted);margin:-12px 0 0}
+
+.plan{display:flex;flex-direction:column;gap:14px}
+.plan>header h2{font-size:26px;font-weight:800}
+.plan>header p{margin:2px 0 0;color:var(--muted)}
+.days{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:620px){.days{grid-template-columns:1fr}}
+.day{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;min-width:0;display:flex;flex-direction:column;gap:10px}
+.day .dl{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.day h3{font-size:18px;font-weight:600;margin-top:-6px}
+.day ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}
+.day li{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start}
+.nums{display:flex;gap:3px;flex-wrap:wrap;max-width:62px}
+.day .num{width:26px;height:26px;font-size:12px}
+.dot0{width:26px;height:26px;display:grid;place-items:center;color:var(--muted)}
+.extra{background:var(--surface);border:1px dashed var(--line);border-radius:10px;padding:10px 12px;margin:0}
+
+.list{display:flex;flex-direction:column;gap:28px}
+section.area{display:flex;flex-direction:column;gap:10px}
+section.area>header h2{font-size:22px;font-weight:800}
+section.area>header p{margin:2px 0 0;color:var(--muted)}
+.areanote{background:var(--surface);border:1px dashed var(--line);border-radius:10px;padding:10px 12px}
+ul.items{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+li.item{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;align-items:start}
+li.item.hl{border-color:var(--fg)}
+.num{width:30px;height:30px;border-radius:50%;background:var(--c);color:#fff;font-weight:600;font-size:14px;display:grid;place-items:center;border:none;padding:0;font-variant-numeric:tabular-nums}
+.item-body{min-width:0;display:flex;flex-direction:column;gap:3px}
+.item-body h3{font-size:16px;font-weight:600;font-family:var(--body)}
+.item-body p{margin:0}
+.links{display:flex;gap:14px;flex-wrap:wrap;font-size:14px;align-items:center}
+.item-btn{background:none;border:none;padding:0;color:var(--muted);text-decoration:underline;font-size:14px}
+
+details.box{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+details.box summary{cursor:pointer;font-family:var(--display);font-size:20px;font-weight:800;list-style-position:outside}
+details.box ul{margin:10px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+.box2{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.box2 h2{font-size:20px;font-weight:800}
+.box2 p{margin:0}
+footer{color:var(--muted);font-size:13px}
+@media (prefers-reduced-motion:no-preference){ .card{animation:up .18s ease-out} @keyframes up{from{transform:translateY(8px);opacity:.4}to{transform:none;opacity:1}} }
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Moja lista dla was</div>
+    <h1>Bangkok i Koh Phangan</h1>
+    <p class="lead">Chłopcy, tu jest wszystko, co musicie zobaczyć, zjeść i przeżyć. Przełączajcie u góry, gdzie akurat jesteście. Każdy punkt na mapie da się kliknąć, a każde miejsce ma link do Map Google. „Musicie” znaczy, że nie ma dyskusji.</p>
+  </header>
+
+  <nav class="switch" aria-label="Gdzie jesteście">
+    <button class="sw" id="sw-bangkok" aria-pressed="true"><b>Bangkok</b><span>3 dni · 16 miejsc</span></button>
+    <button class="sw" id="sw-phangan" aria-pressed="false"><b>Koh Phangan</b><span>4 dni · 35 miejsc</span></button>
+  </nav>
+
+  <div class="notes">
+    <div class="note key">
+      <h2>Dojazd na Koh Phangan</h2>
+      <ul>
+        <li>Z Bangkoku lecicie samolotem na <strong>Koh Samui</strong>, a z Samui płyniecie promem na Phangan.</li>
+        <li><strong>Na Samui się nie zatrzymujcie.</strong> Z lotniska prosto do portu i od razu na Phangan, tam czeka większość moich polecajek.</li>
+        <li><strong>Prom powrotny z Phangan na Samui zarezerwujcie wcześniej</strong>, na dzień wylotu i z zapasem czasu. To jest ważne!</li>
+      </ul>
+    </div>
+    <div class="note">
+      <h2>Jedzenie: zasady</h2>
+      <ul>
+        <li><strong>Nie bójcie się jeść z budek na ulicy.</strong> Tam jest najlepsze jedzenie.</li>
+        <li><strong>Mango sticky rice</strong> jedzcie bez zawahania. Oczywiście.</li>
+        <li>Spróbujcie <strong>Thai tea</strong>. Ja ją kocham, ale to strasznie słodkie dziadostwo. Mniej cukru: „waan noi”.</li>
+        <li>Wybierajcie budki z kolejką lokalsów. Wodę pijcie z butelki.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- BANGKOK -->
+  <section class="view" id="view-bangkok" aria-labelledby="h-bkk">
+    <div class="vhead"><h2 id="h-bkk">Bangkok</h2><p>Stare miasto ze świątyniami, centrum z parkiem i zakupami, a na północy targ i muzeum.</p></div>
+    <div class="controls">
+      <div class="row-label">Część miasta</div>
+      <div class="row areas" role="group" aria-label="Część miasta"></div>
+      <div class="row-label">Co pokazać</div>
+      <div class="row cats" role="group" aria-label="Co pokazać"></div>
+    </div>
+    <div class="mapframe bkk">
+      <svg class="map" viewBox="0 0 993 1089" style="aspect-ratio:993/1089" role="img" aria-label="Mapa Bangkoku z polecanymi miejscami">
+        <rect x="-3000" y="-3000" width="7000" height="7000" fill="var(--city)"/>
+        <path class="river" d="M128.2,-118.1 L132.4,-94.5 L115.5,-60.5 L66.2,-8.6 L43.6,29.9 L40.7,58.2 L55.6,154.8 L68.2,176.4 L120.0,213.4 L140.3,282.2 L184.5,347.8 L210.7,405.4 L228.3,417.5 L284.7,437.4 L298.8,452.8 L305.1,480.5 L299.9,520.8 L283.9,555.3 L226.2,621.8 L211.5,645.0 L174.4,732.4 L127.9,785.7 L115.3,811.0 L114.6,860.9 L134.0,900.5 L158.7,922.8 L231.2,943.5 L251.4,954.1 L269.0,986.0 L274.1,1017.9 L269.7,1060.4 L257.2,1088.7 L217.4,1133.8 L142.4,1182.0 L127.4,1210.3 M522.2,1183.8 L530.9,1162.4 L544.5,1151.1 L576.4,1145.8 L627.3,1160.5 L706.2,1193.9"/>
+        <g class="labels"></g>
+        <g class="pins"></g>
+      </svg>
+    </div>
+    <div class="card" hidden></div>
+    <p class="hint">Kliknijcie numer na mapie, żeby zobaczyć opis. „Część miasta” przybliża mapę.</p>
+    <section class="plan">
+      <header><h2>Plan na 3 dni</h2><p>Ułóżcie to tak, żeby dzień 3 wypadł w sobotę albo w niedzielę, bo wtedy działa Chatuchak. W największym upale, ok. 13–16, schowajcie się w hotelu albo w klimatyzowanym centrum.</p></header>
+      <div class="days"></div>
+    </section>
+    <div class="list"></div>
+  </section>
+
+  <!-- KOH PHANGAN -->
+  <section class="view" id="view-phangan" aria-labelledby="h-php" hidden>
+    <div class="vhead"><h2 id="h-php">Koh Phangan</h2><p>Moje miejscówki na wyspie, plaże, zachody słońca i Muay Thai.</p></div>
+    <div class="note">
+      <h2><span class="swatch" aria-hidden="true"></span>Gdzie spać</h2>
+      <p>Po lewej stronie wyspy, w żółtym pasie: Haad Yao, Srithanu, Hin Kong, Wok Tum, Thong Sala albo Ban Tai. Tam są moje miejscówki, najładniejsze zachody słońca i blisko do portu.</p>
+    </div>
+    <div class="note key">
+      <h2>Skutery</h2>
+      <p>Skutery bierzcie z <strong>Pakapao Motorbike For Rent</strong>. Napiszcie do nich <strong>dzień albo dwa dni wcześniej</strong>, że chcecie skutery.</p>
+      <p style="margin-top:6px">Telefon: <strong style="user-select:all">+66 82 729 5604</strong> · <a href="https://wa.me/66827295604" target="_blank" rel="noopener">napisz na WhatsAppie</a></p>
+    </div>
+    <div class="controls">
+      <div class="row-label">Część wyspy</div>
+      <div class="row areas" role="group" aria-label="Część wyspy"></div>
+      <div class="row-label">Co pokazać</div>
+      <div class="row cats" role="group" aria-label="Co pokazać"></div>
+    </div>
+    <div class="mapframe php">
+      <svg class="map" viewBox="0 0 1005 930" style="aspect-ratio:1005/930" role="img" aria-label="Mapa Koh Phangan z polecanymi miejscami">
+        <defs><clipPath id="clip-php"><path d="M181.8,281.4 L190.0,301.6 L186.1,319.1 L189.1,328.2 L182.4,347.7 L195.4,354.2 L202.8,366.6 L208.4,364.8 L209.4,369.7 L204.5,372.0 L212.5,373.8 L211.4,379.7 L203.7,378.1 L201.6,386.5 L213.6,393.6 L226.1,380.4 L237.9,383.2 L245.6,380.6 L260.9,393.9 L270.8,412.1 L285.9,461.6 L295.1,477.0 L298.1,497.3 L295.3,503.4 L289.8,501.0 L271.5,513.0 L271.4,536.6 L275.4,552.9 L283.9,568.1 L290.7,574.0 L299.7,570.9 L306.6,579.6 L311.4,600.0 L306.1,605.8 L301.6,596.5 L304.7,591.3 L300.5,593.1 L304.1,610.2 L315.1,602.8 L319.3,603.6 L307.5,613.7 L315.6,613.7 L315.4,622.1 L329.4,639.8 L338.0,635.6 L345.1,645.4 L366.9,658.9 L400.7,650.6 L427.4,655.2 L446.5,667.5 L478.4,672.8 L486.5,679.4 L501.2,677.8 L515.1,681.4 L511.9,687.3 L516.9,691.4 L515.1,699.1 L518.5,690.2 L513.9,685.8 L521.0,683.3 L529.4,687.3 L526.6,694.3 L520.5,692.6 L518.2,701.4 L522.1,694.9 L527.6,696.6 L532.6,692.6 L556.7,706.2 L646.7,729.1 L650.2,738.4 L662.3,745.6 L677.7,764.8 L696.7,773.2 L704.2,782.3 L724.1,788.2 L765.8,811.4 L787.7,841.7 L783.4,845.6 L785.1,848.8 L787.4,842.6 L787.4,846.5 L789.7,844.5 L795.1,850.2 L796.1,856.5 L808.8,857.6 L823.2,871.5 L828.5,880.2 L827.8,890.8 L860.0,896.0 L868.8,892.4 L871.5,880.7 L847.1,874.9 L840.3,859.4 L819.8,847.5 L817.4,830.5 L823.5,812.8 L839.4,812.0 L841.1,806.4 L846.4,805.7 L852.2,798.2 L860.0,798.2 L862.3,804.1 L876.3,794.8 L877.5,788.4 L862.1,774.0 L858.9,761.2 L848.8,748.2 L855.8,732.6 L866.8,731.7 L872.5,726.7 L868.0,718.7 L874.0,711.1 L878.3,708.3 L889.1,713.8 L897.5,709.0 L890.4,701.5 L879.7,698.8 L888.4,688.6 L888.1,682.5 L881.0,675.0 L879.2,659.7 L873.1,649.2 L875.5,646.0 L866.9,634.9 L862.7,611.6 L858.6,606.2 L866.2,592.9 L870.3,591.1 L874.2,595.2 L888.5,583.5 L885.2,582.6 L885.1,576.3 L867.8,574.2 L865.0,566.2 L871.1,553.9 L871.9,538.7 L877.7,530.2 L872.9,511.9 L884.7,507.6 L893.6,487.6 L894.0,459.3 L891.5,451.8 L887.8,452.8 L885.5,447.7 L884.0,421.3 L868.4,404.7 L859.2,403.7 L861.7,393.0 L853.7,389.4 L864.0,364.1 L857.6,360.7 L856.3,346.9 L844.4,336.4 L845.5,330.0 L839.0,320.3 L846.0,306.5 L844.0,291.4 L821.1,280.9 L813.5,269.3 L814.3,259.2 L806.2,251.0 L793.2,253.8 L788.9,257.9 L787.3,270.7 L774.9,275.1 L759.4,267.6 L747.3,253.5 L753.8,244.4 L751.3,244.9 L750.0,236.3 L754.6,231.9 L744.7,223.4 L747.0,196.4 L752.8,196.4 L754.4,190.2 L761.1,190.3 L771.7,183.9 L782.0,184.3 L785.0,175.0 L782.6,170.6 L776.9,166.6 L765.4,166.7 L748.6,154.9 L744.6,156.0 L736.2,140.8 L727.2,140.7 L722.0,135.7 L699.1,136.2 L684.2,128.9 L670.8,137.4 L658.3,127.6 L643.9,124.6 L639.8,126.0 L637.3,134.5 L627.0,136.4 L615.3,131.7 L611.7,129.1 L608.3,96.0 L598.1,74.2 L574.6,65.9 L550.1,69.6 L535.8,79.0 L528.5,73.8 L521.6,78.9 L514.0,74.6 L509.2,82.0 L511.7,84.8 L508.7,89.7 L512.4,93.6 L509.3,98.6 L498.9,105.4 L493.6,100.1 L489.6,101.1 L491.3,116.7 L477.5,142.7 L468.9,139.4 L467.1,144.7 L469.9,140.3 L473.5,149.5 L469.4,156.8 L459.7,164.1 L439.6,169.0 L427.7,162.8 L422.7,146.9 L416.9,154.2 L388.1,137.8 L386.7,133.1 L400.3,116.7 L385.4,111.7 L377.8,98.8 L379.5,85.2 L373.5,82.2 L371.9,75.1 L367.8,71.2 L356.8,71.6 L353.5,84.2 L349.8,84.6 L351.5,100.1 L344.3,102.6 L327.7,95.3 L310.1,93.8 L307.3,95.5 L308.0,104.1 L302.8,107.4 L296.0,106.0 L286.7,131.6 L275.0,141.8 L265.5,140.1 L258.6,145.3 L250.1,138.4 L242.8,139.2 L248.5,155.5 L255.7,162.3 L254.8,167.5 L247.4,178.7 L238.1,184.8 L226.9,176.8 L217.4,177.4 L217.2,186.5 L211.9,194.1 L216.8,201.5 L211.6,208.5 L216.8,221.0 L215.3,231.5 L200.8,250.1 L185.9,257.1 L191.0,261.6 L190.5,266.3 L181.8,281.4Z"/></clipPath></defs>
+        <rect x="-2000" y="-2000" width="5000" height="5000" fill="var(--sea)"/>
+        <path class="coast" d="M181.8,281.4 L190.0,301.6 L186.1,319.1 L189.1,328.2 L182.4,347.7 L195.4,354.2 L202.8,366.6 L208.4,364.8 L209.4,369.7 L204.5,372.0 L212.5,373.8 L211.4,379.7 L203.7,378.1 L201.6,386.5 L213.6,393.6 L226.1,380.4 L237.9,383.2 L245.6,380.6 L260.9,393.9 L270.8,412.1 L285.9,461.6 L295.1,477.0 L298.1,497.3 L295.3,503.4 L289.8,501.0 L271.5,513.0 L271.4,536.6 L275.4,552.9 L283.9,568.1 L290.7,574.0 L299.7,570.9 L306.6,579.6 L311.4,600.0 L306.1,605.8 L301.6,596.5 L304.7,591.3 L300.5,593.1 L304.1,610.2 L315.1,602.8 L319.3,603.6 L307.5,613.7 L315.6,613.7 L315.4,622.1 L329.4,639.8 L338.0,635.6 L345.1,645.4 L366.9,658.9 L400.7,650.6 L427.4,655.2 L446.5,667.5 L478.4,672.8 L486.5,679.4 L501.2,677.8 L515.1,681.4 L511.9,687.3 L516.9,691.4 L515.1,699.1 L518.5,690.2 L513.9,685.8 L521.0,683.3 L529.4,687.3 L526.6,694.3 L520.5,692.6 L518.2,701.4 L522.1,694.9 L527.6,696.6 L532.6,692.6 L556.7,706.2 L646.7,729.1 L650.2,738.4 L662.3,745.6 L677.7,764.8 L696.7,773.2 L704.2,782.3 L724.1,788.2 L765.8,811.4 L787.7,841.7 L783.4,845.6 L785.1,848.8 L787.4,842.6 L787.4,846.5 L789.7,844.5 L795.1,850.2 L796.1,856.5 L808.8,857.6 L823.2,871.5 L828.5,880.2 L827.8,890.8 L860.0,896.0 L868.8,892.4 L871.5,880.7 L847.1,874.9 L840.3,859.4 L819.8,847.5 L817.4,830.5 L823.5,812.8 L839.4,812.0 L841.1,806.4 L846.4,805.7 L852.2,798.2 L860.0,798.2 L862.3,804.1 L876.3,794.8 L877.5,788.4 L862.1,774.0 L858.9,761.2 L848.8,748.2 L855.8,732.6 L866.8,731.7 L872.5,726.7 L868.0,718.7 L874.0,711.1 L878.3,708.3 L889.1,713.8 L897.5,709.0 L890.4,701.5 L879.7,698.8 L888.4,688.6 L888.1,682.5 L881.0,675.0 L879.2,659.7 L873.1,649.2 L875.5,646.0 L866.9,634.9 L862.7,611.6 L858.6,606.2 L866.2,592.9 L870.3,591.1 L874.2,595.2 L888.5,583.5 L885.2,582.6 L885.1,576.3 L867.8,574.2 L865.0,566.2 L871.1,553.9 L871.9,538.7 L877.7,530.2 L872.9,511.9 L884.7,507.6 L893.6,487.6 L894.0,459.3 L891.5,451.8 L887.8,452.8 L885.5,447.7 L884.0,421.3 L868.4,404.7 L859.2,403.7 L861.7,393.0 L853.7,389.4 L864.0,364.1 L857.6,360.7 L856.3,346.9 L844.4,336.4 L845.5,330.0 L839.0,320.3 L846.0,306.5 L844.0,291.4 L821.1,280.9 L813.5,269.3 L814.3,259.2 L806.2,251.0 L793.2,253.8 L788.9,257.9 L787.3,270.7 L774.9,275.1 L759.4,267.6 L747.3,253.5 L753.8,244.4 L751.3,244.9 L750.0,236.3 L754.6,231.9 L744.7,223.4 L747.0,196.4 L752.8,196.4 L754.4,190.2 L761.1,190.3 L771.7,183.9 L782.0,184.3 L785.0,175.0 L782.6,170.6 L776.9,166.6 L765.4,166.7 L748.6,154.9 L744.6,156.0 L736.2,140.8 L727.2,140.7 L722.0,135.7 L699.1,136.2 L684.2,128.9 L670.8,137.4 L658.3,127.6 L643.9,124.6 L639.8,126.0 L637.3,134.5 L627.0,136.4 L615.3,131.7 L611.7,129.1 L608.3,96.0 L598.1,74.2 L574.6,65.9 L550.1,69.6 L535.8,79.0 L528.5,73.8 L521.6,78.9 L514.0,74.6 L509.2,82.0 L511.7,84.8 L508.7,89.7 L512.4,93.6 L509.3,98.6 L498.9,105.4 L493.6,100.1 L489.6,101.1 L491.3,116.7 L477.5,142.7 L468.9,139.4 L467.1,144.7 L469.9,140.3 L473.5,149.5 L469.4,156.8 L459.7,164.1 L439.6,169.0 L427.7,162.8 L422.7,146.9 L416.9,154.2 L388.1,137.8 L386.7,133.1 L400.3,116.7 L385.4,111.7 L377.8,98.8 L379.5,85.2 L373.5,82.2 L371.9,75.1 L367.8,71.2 L356.8,71.6 L353.5,84.2 L349.8,84.6 L351.5,100.1 L344.3,102.6 L327.7,95.3 L310.1,93.8 L307.3,95.5 L308.0,104.1 L302.8,107.4 L296.0,106.0 L286.7,131.6 L275.0,141.8 L265.5,140.1 L258.6,145.3 L250.1,138.4 L242.8,139.2 L248.5,155.5 L255.7,162.3 L254.8,167.5 L247.4,178.7 L238.1,184.8 L226.9,176.8 L217.4,177.4 L217.2,186.5 L211.9,194.1 L216.8,201.5 L211.6,208.5 L216.8,221.0 L215.3,231.5 L200.8,250.1 L185.9,257.1 L191.0,261.6 L190.5,266.3 L181.8,281.4Z"/>
+        <path class="island" d="M181.8,281.4 L190.0,301.6 L186.1,319.1 L189.1,328.2 L182.4,347.7 L195.4,354.2 L202.8,366.6 L208.4,364.8 L209.4,369.7 L204.5,372.0 L212.5,373.8 L211.4,379.7 L203.7,378.1 L201.6,386.5 L213.6,393.6 L226.1,380.4 L237.9,383.2 L245.6,380.6 L260.9,393.9 L270.8,412.1 L285.9,461.6 L295.1,477.0 L298.1,497.3 L295.3,503.4 L289.8,501.0 L271.5,513.0 L271.4,536.6 L275.4,552.9 L283.9,568.1 L290.7,574.0 L299.7,570.9 L306.6,579.6 L311.4,600.0 L306.1,605.8 L301.6,596.5 L304.7,591.3 L300.5,593.1 L304.1,610.2 L315.1,602.8 L319.3,603.6 L307.5,613.7 L315.6,613.7 L315.4,622.1 L329.4,639.8 L338.0,635.6 L345.1,645.4 L366.9,658.9 L400.7,650.6 L427.4,655.2 L446.5,667.5 L478.4,672.8 L486.5,679.4 L501.2,677.8 L515.1,681.4 L511.9,687.3 L516.9,691.4 L515.1,699.1 L518.5,690.2 L513.9,685.8 L521.0,683.3 L529.4,687.3 L526.6,694.3 L520.5,692.6 L518.2,701.4 L522.1,694.9 L527.6,696.6 L532.6,692.6 L556.7,706.2 L646.7,729.1 L650.2,738.4 L662.3,745.6 L677.7,764.8 L696.7,773.2 L704.2,782.3 L724.1,788.2 L765.8,811.4 L787.7,841.7 L783.4,845.6 L785.1,848.8 L787.4,842.6 L787.4,846.5 L789.7,844.5 L795.1,850.2 L796.1,856.5 L808.8,857.6 L823.2,871.5 L828.5,880.2 L827.8,890.8 L860.0,896.0 L868.8,892.4 L871.5,880.7 L847.1,874.9 L840.3,859.4 L819.8,847.5 L817.4,830.5 L823.5,812.8 L839.4,812.0 L841.1,806.4 L846.4,805.7 L852.2,798.2 L860.0,798.2 L862.3,804.1 L876.3,794.8 L877.5,788.4 L862.1,774.0 L858.9,761.2 L848.8,748.2 L855.8,732.6 L866.8,731.7 L872.5,726.7 L868.0,718.7 L874.0,711.1 L878.3,708.3 L889.1,713.8 L897.5,709.0 L890.4,701.5 L879.7,698.8 L888.4,688.6 L888.1,682.5 L881.0,675.0 L879.2,659.7 L873.1,649.2 L875.5,646.0 L866.9,634.9 L862.7,611.6 L858.6,606.2 L866.2,592.9 L870.3,591.1 L874.2,595.2 L888.5,583.5 L885.2,582.6 L885.1,576.3 L867.8,574.2 L865.0,566.2 L871.1,553.9 L871.9,538.7 L877.7,530.2 L872.9,511.9 L884.7,507.6 L893.6,487.6 L894.0,459.3 L891.5,451.8 L887.8,452.8 L885.5,447.7 L884.0,421.3 L868.4,404.7 L859.2,403.7 L861.7,393.0 L853.7,389.4 L864.0,364.1 L857.6,360.7 L856.3,346.9 L844.4,336.4 L845.5,330.0 L839.0,320.3 L846.0,306.5 L844.0,291.4 L821.1,280.9 L813.5,269.3 L814.3,259.2 L806.2,251.0 L793.2,253.8 L788.9,257.9 L787.3,270.7 L774.9,275.1 L759.4,267.6 L747.3,253.5 L753.8,244.4 L751.3,244.9 L750.0,236.3 L754.6,231.9 L744.7,223.4 L747.0,196.4 L752.8,196.4 L754.4,190.2 L761.1,190.3 L771.7,183.9 L782.0,184.3 L785.0,175.0 L782.6,170.6 L776.9,166.6 L765.4,166.7 L748.6,154.9 L744.6,156.0 L736.2,140.8 L727.2,140.7 L722.0,135.7 L699.1,136.2 L684.2,128.9 L670.8,137.4 L658.3,127.6 L643.9,124.6 L639.8,126.0 L637.3,134.5 L627.0,136.4 L615.3,131.7 L611.7,129.1 L608.3,96.0 L598.1,74.2 L574.6,65.9 L550.1,69.6 L535.8,79.0 L528.5,73.8 L521.6,78.9 L514.0,74.6 L509.2,82.0 L511.7,84.8 L508.7,89.7 L512.4,93.6 L509.3,98.6 L498.9,105.4 L493.6,100.1 L489.6,101.1 L491.3,116.7 L477.5,142.7 L468.9,139.4 L467.1,144.7 L469.9,140.3 L473.5,149.5 L469.4,156.8 L459.7,164.1 L439.6,169.0 L427.7,162.8 L422.7,146.9 L416.9,154.2 L388.1,137.8 L386.7,133.1 L400.3,116.7 L385.4,111.7 L377.8,98.8 L379.5,85.2 L373.5,82.2 L371.9,75.1 L367.8,71.2 L356.8,71.6 L353.5,84.2 L349.8,84.6 L351.5,100.1 L344.3,102.6 L327.7,95.3 L310.1,93.8 L307.3,95.5 L308.0,104.1 L302.8,107.4 L296.0,106.0 L286.7,131.6 L275.0,141.8 L265.5,140.1 L258.6,145.3 L250.1,138.4 L242.8,139.2 L248.5,155.5 L255.7,162.3 L254.8,167.5 L247.4,178.7 L238.1,184.8 L226.9,176.8 L217.4,177.4 L217.2,186.5 L211.9,194.1 L216.8,201.5 L211.6,208.5 L216.8,221.0 L215.3,231.5 L200.8,250.1 L185.9,257.1 L191.0,261.6 L190.5,266.3 L181.8,281.4Z"/>
+        <path class="zone" clip-path="url(#clip-php)" d="M277.9,138.0 L212.9,222.0 L195.2,318.0 L236.5,402.0 L272.0,492.0 L301.6,576.0 L348.9,636.0 L431.7,672.0 L532.2,690.0 L662.3,684.0" stroke-width="95"/>
+        <g class="labels"></g>
+        <g class="pins"></g>
+      </svg>
+    </div>
+    <div class="card" hidden></div>
+    <p class="hint">Kliknijcie numer na mapie, żeby zobaczyć opis. „Część wyspy” przybliża mapę.</p>
+    <section class="plan">
+      <header><h2>Plan na 4 dni</h2><p>Moja propozycja, jak to wszystko poukładać. Kliknijcie numer, żeby zobaczyć miejsce na mapie.</p></header>
+      <div class="days"></div>
+      <p class="extra"></p>
+    </section>
+    <div class="box2">
+      <h2>Walki Muay Thai</h2>
+      <p>Na Phanganie walki są codziennie. Gdzie i kiedy, znajdziecie na Instagramie <a href="https://www.instagram.com/koh_phangan_live" target="_blank" rel="noopener">@koh_phangan_live</a>, publikują tam plakaty. Na galę po prostu jedziecie i kupujecie bilet przed wejściem. <strong>Musicie iść na walkę, na której walczą amatorzy, to jest zajebiste.</strong></p>
+    </div>
+    <div class="list"></div>
+    <details class="box">
+      <summary>Kratom: jakby chcieli spróbować</summary>
+      <ul>
+        <li>Gdzie kupić: napiszcie do mnie, to wam powiem.</li>
+        <li><strong>Nie łączcie z antydepresantami.</strong> Ani z alkoholem, lekami uspokajającymi czy czymkolwiek innym.</li>
+        <li>Co to jest: liście tajskiego drzewa <em>Mitragyna speciosa</em>, spokrewnionego z kawą. Rolnicy w Tajlandii od wieków żują je albo piją jako herbatę, żeby mieć siłę do pracy. Związki z liści działają między innymi na te same receptory w mózgu co opioidy, tylko dużo słabiej.</li>
+        <li>Mała ilość pobudza, trochę jak mocna kawa. Większa rozluźnia, uspokaja, daje lekką euforię, ale też senność.</li>
+        <li>Może wywołać mdłości i wymioty (zwłaszcza po większej ilości albo w upale), zawroty głowy, odwodnienie i zaparcia. Brany regularnie uzależnia.</li>
+        <li>Zacznijcie od małej ilości i odczekajcie. Pijcie dużo wody. Po kratomie nie wsiadajcie na skuter.</li>
+        <li>W Tajlandii jest legalny od 18 lat. <strong>Nie zabierajcie go do Polski</strong>: tu jest na liście substancji kontrolowanych, a z Tajlandii nie wolno go wywozić bez zgody.</li>
+      </ul>
+    </details>
+  </section>
+
+  <footer>Położenie miejsc sprawdzone w Mapach Google i OpenStreetMap, listopad 2026. Godziny otwarcia i ceny sprawdźcie na miejscu.</footer>
+</div>
+
+<script>
+const DATA = {"bangkok": {"full": [0, 0, 993, 1089], "allName": "Całe miasto", "areas": [{"id": "stare", "name": "Stare miasto i Chinatown", "sub": "świątynie, pad thai, Khao San i gala Muay Thai", "warn": "MUSICIE BYĆ OKRYCI. Ramiona i kolana zakryte: długie spodnie i koszulka z rękawem. Żadnych szortów, koszulek bez rękawów ani podartych spodni. W Wielkim Pałacu sprawdzają to na bramce i nie wpuszczą was. Przy wejściu można wypożyczyć ubranie (ok. 200 THB za rzecz). W budynkach świątyń zdejmujecie buty."}, {"id": "centrum", "name": "Centrum: Siam, Silom, Sukhumvit", "sub": "park, zupka, zakupy, kakigori, trening i rooftop"}, {"id": "polnoc", "name": "Północ", "sub": "targ weekendowy, muzeum i druga gala"}], "cats": [{"id": "swiatynie", "name": "Świątynie", "col": "wellness"}, {"id": "zwiedzanie", "name": "Zwiedzanie", "col": "plaze"}, {"id": "jedzenie", "name": "Jedzenie", "col": "jedzenie"}, {"id": "deser", "name": "Desery", "col": "kawa"}, {"id": "sport", "name": "Muay Thai", "col": "sport"}, {"id": "zakupy", "name": "Zakupy", "col": "impreza"}, {"id": "bar", "name": "Wieczór", "col": "prom"}], "places": [{"name": "Wielki Pałac Królewski", "must": true, "text": "Grand Palace, razem ze Szmaragdowym Buddą. Wejście 500 THB, 08:30–16:30, ostatnie wejście 15:30. Jeśli ktoś przy pałacu powie, że „dziś zamknięte”, i zaproponuje tuk-tuka gdzie indziej, to przekręt. Idźcie prosto do wejścia.", "url": "https://maps.google.com/?cid=3056950040631135297", "area": "stare", "cat": "swiatynie", "lat": 13.7498558, "lng": 100.4915765, "x": 138.3, "y": 859.0}, {"name": "Wat Pho", "must": true, "text": "Świątynia Leżącego Buddy, kilka minut pieszo od pałacu. Wejście 300 THB, weźcie gotówkę.", "url": "https://maps.google.com/?cid=9076048512320389678", "area": "stare", "cat": "swiatynie", "lat": 13.7464237, "lng": 100.4927733, "x": 146.0, "y": 881.6}, {"name": "Wat Arun", "must": true, "text": "Świątynia Świtu, po drugiej stronie rzeki. Z przystani Tha Tien płyniecie promem przez rzekę. Wejście 200 THB, gotówka.", "url": "https://maps.google.com/?cid=9727099538087655581", "area": "stare", "cat": "swiatynie", "lat": 13.7438652, "lng": 100.488444, "x": 118.2, "y": 898.5}, {"name": "Thipsamai", "must": true, "text": "Najlepszy pad thai na świecie. Bierzcie z mini krewetkami. Liczę, że zjecie go więcej niż raz! Często jest kolejka, ale warto.", "url": "https://maps.app.goo.gl/kbd4oL8Jih4aPSfLA", "area": "stare", "cat": "jedzenie", "lat": 13.7527976, "lng": 100.504823, "x": 223.2, "y": 839.5}, {"name": "Rajadamnern Stadium", "must": true, "text": "Gala Muay Thai, na starym mieście, blisko Khao San. Musicie, nie wpuszczę was z powrotem, niestety. Przykro mi! Bilet kupcie online, wcześniej.", "url": "https://maps.app.goo.gl/NvGJcihmSfPodTeeA", "area": "stare", "cat": "sport", "lat": 13.7609937, "lng": 100.5087949, "x": 248.7, "y": 785.4}, {"name": "Khao San Road", "must": true, "text": "Ulica koszmaru, ale trzeba ją zobaczyć. Turystycznie, uszy bolą, muzyka co 3 sekundy inna. Ja przeszłam i marzyłam, żeby się już skończyła. Ale musicie zobaczyć ten rozpierdziel Bangkoku. Pewnie zaproszą was na ping pong show: wedle uznania, bawcie się chłopcy. Jeśli pójdziecie, ustalcie cenę wejścia i drinków przed wejściem.", "url": "https://maps.app.goo.gl/TGmRLt3obyQHgw5E6", "area": "stare", "cat": "zwiedzanie", "lat": 13.7581072, "lng": 100.4989781, "x": 185.7, "y": 804.5}, {"name": "Chinatown (Yaowarat)", "must": true, "text": "Totalnie warto tam iść. Stąd są wszystkie turystyczne zdjęcia z Bangkoku, jest mega klimat i pyszne jedzonko. Najlepiej wieczorem: jedzenie z ulicy, a potem masaż.", "url": "https://maps.app.goo.gl/jpMehF8GuuC2FmUr7", "area": "stare", "cat": "zwiedzanie", "lat": 13.7408624, "lng": 100.5086773, "x": 247.9, "y": 918.3}, {"name": "Yokkao Training Center", "must": false, "text": "Proszę, idźcie na trening tutaj.", "url": "https://maps.app.goo.gl/rkQygGKZ5F1khirL6", "area": "centrum", "cat": "sport", "lat": 13.7286843, "lng": 100.5605017, "x": 580.1, "y": 998.7}, {"name": "Park Lumpini", "must": true, "text": "Koniecznie musicie tam iść. Zajebisty, kultowy park w środku miasta. Wypatrujcie waranów, chodzą tam sobie po trawie i pływają w stawach.", "url": "https://maps.google.com/?cid=12394434568566794550", "area": "centrum", "cat": "zwiedzanie", "lat": 13.7314281, "lng": 100.5416984, "x": 459.5, "y": 980.6}, {"name": "Khao-Sō-i", "must": true, "text": "Zajebista zupka, koniecznie trzeba zjeść. Khao soi to zupa curry z północy Tajlandii, z miękkim makaronem w środku i chrupiącym na wierzchu.", "url": "https://maps.app.goo.gl/ag86BA6oupNL4nhG6", "area": "centrum", "cat": "jedzenie", "lat": 13.7273, "lng": 100.5335, "x": 407.0, "y": 1007.8}, {"name": "Siam Center", "must": false, "text": "Zakupy. Kolejka BTS, stacja Siam. W środku jest After You, więc kakigori macie po drodze.", "url": "https://maps.google.com/?cid=11650808064083583788", "more": [{"label": "Siam Paragon", "url": "https://maps.google.com/?cid=11476178565854079331"}, {"label": "Siam Discovery", "url": "https://maps.google.com/?cid=1826683215596908818"}, {"label": "MBK Center", "url": "https://maps.google.com/?cid=4638341614504662750"}], "area": "centrum", "cat": "zakupy", "lat": 13.7462793, "lng": 100.5326779, "x": 401.7, "y": 882.6}, {"name": "Tichuca Rooftop Bar", "must": false, "text": "Rooftop bar z wielkim świecącym drzewem-meduzą i widokiem na całe miasto. Alternatywa na wieczór. Otwarte od ok. 17:00. Wejście bez opłat, ale trzeba kupić drinka. Nie ma rezerwacji, często jest kolejka, więc przyjdźcie wcześnie, najlepiej na zachód słońca. Weźcie paszport i ubierzcie się porządnie: bez klapek, sportowych ciuchów i koszulek bez rękawów.", "url": "https://maps.google.com/?cid=3170203217852474558", "more": [{"label": "Zobacz na TikToku", "url": "https://vm.tiktok.com/ZN8aQrFoK/"}], "area": "centrum", "cat": "bar", "lat": 13.7223968, "lng": 100.5805317, "x": 708.5, "y": 1040.2}, {"name": "After You (kakigori)", "must": true, "text": "Kakigori. Jak to jadłam, to myślałam, że się popłaczę. Najlepszy deser EVER. Weźcie sobie po jednym na głowę, dacie radę. Są różne smaki: mango, Thai tea, hojicha, sernik truskawkowy. Na wyspach go nie ma, więc zjedzcie w Bangkoku, najlepiej kilka razy.", "url": "https://maps.app.goo.gl/fDLbQdFRV9B6dNPw8", "more": [{"label": "Terminal 21", "url": "https://maps.app.goo.gl/fDLbQdFRV9B6dNPw8"}, {"label": "Siam Center", "url": "https://maps.google.com/?cid=5771569288426755402"}, {"label": "Siam Paragon", "url": "https://maps.google.com/?cid=18316853966416162195"}, {"label": "CentralWorld", "url": "https://maps.google.com/?cid=4706676101089833158"}, {"label": "Silom", "url": "https://maps.google.com/?cid=5700973471693487760"}, {"label": "ICONSIAM", "url": "https://maps.google.com/?cid=14537189333046184428"}, {"label": "Thonglor", "url": "https://maps.google.com/?cid=3475250046182095589"}, {"label": "Asiatique", "url": "https://maps.google.com/?cid=3793654706767334441"}], "area": "centrum", "cat": "deser", "lat": 13.7379, "lng": 100.5604, "x": 579.4, "y": 937.9}, {"name": "Chatuchak Weekend Market", "must": false, "text": "Nie wiem, czy Grzesiu to przeżyje. Mega dużo chińszczyzny, zabawnie, totalnie Thai vibe. Otwarte w weekend. Idźcie rano, zanim zrobi się upał.", "url": "https://maps.app.goo.gl/yDkdhtK4p1JmD9hW6", "area": "polnoc", "cat": "zakupy", "lat": 13.799781, "lng": 100.5504245, "x": 515.5, "y": 529.4}, {"name": "MOCA Bangkok", "must": false, "text": "Muzeum sztuki współczesnej, totalnie warto. Jest daleko na północy, więc połączcie je z Chatuchak.", "url": "https://maps.app.goo.gl/X5YpLbvHRDtu1XR5A", "area": "polnoc", "cat": "zwiedzanie", "lat": 13.8523198, "lng": 100.5630092, "x": 596.1, "y": 182.7}, {"name": "One Lumpinee", "must": false, "text": "Druga opcja na galę, daleko na północy miasta. Bilet kupcie online, wcześniej.", "url": "https://maps.app.goo.gl/vMersdsUa3FnVVh17", "area": "polnoc", "cat": "sport", "lat": 13.8666496, "lng": 100.608311, "x": 886.5, "y": 88.1}], "plan": [{"day": "Dzień 1", "title": "Stare miasto: świątynie, pad thai i Muay Thai", "steps": [{"t": "Rano Wielki Pałac, potem pieszo do Wat Pho, potem promem z przystani Tha Tien do Wat Arun. Pamiętajcie: zakryte ramiona i kolana!", "p": ["Wielki Pałac Królewski", "Wat Pho", "Wat Arun"]}, {"t": "Obiad: pad thai w Thipsamai, z mini krewetkami.", "p": ["Thipsamai"]}, {"t": "Po południu odpoczynek w hotelu, bo wtedy jest największy upał.", "p": []}, {"t": "Wieczorem gala Muay Thai na Rajadamnern (bilety kupcie wcześniej online), a potem Khao San Road. Ping pong show wedle uznania.", "p": ["Rajadamnern Stadium", "Khao San Road"]}]}, {"day": "Dzień 2", "title": "Trening, park, zupka, zakupy i Chinatown", "steps": [{"t": "Rano trening Muay Thai w Yokkao.", "p": ["Yokkao Training Center"]}, {"t": "Potem park Lumpini. Wypatrujcie waranów.", "p": ["Park Lumpini"]}, {"t": "Obiad: zajebista zupka w Khao-Sō-i.", "p": ["Khao-Sō-i"]}, {"t": "Po południu Siam Center, Siam Paragon i MBK. W Siam Center jest After You, więc kakigori, po jednym na głowę!", "p": ["Siam Center"]}, {"t": "Wieczorem Chinatown: jedzenie z ulicy, zdjęcia i masaż na koniec.", "p": ["Chinatown (Yaowarat)"]}]}, {"day": "Dzień 3", "title": "Północ miasta (najlepiej w sobotę albo w niedzielę)", "steps": [{"t": "Rano Chatuchak Weekend Market, zanim zrobi się upał. Zobaczymy, czy Grzesiu to przeżyje.", "p": ["Chatuchak Weekend Market"]}, {"t": "Po południu muzeum MOCA, totalnie warto. Sprawdźcie godziny otwarcia.", "p": ["MOCA Bangkok"]}, {"t": "Wieczór do wyboru: rooftop Tichuca na zachód słońca, drugi pad thai w Thipsamai, drugie kakigori albo gala w One Lumpinee, jeśli pierwszego dnia nie wyszło z Rajadamnern.", "p": ["Tichuca Rooftop Bar", "One Lumpinee"]}, {"t": "Następnego dnia lot na Koh Samui i od razu prom na Phangan.", "p": []}]}], "labels": [["Chao Phraya", 229.9, 520.8, "water"], ["Stare miasto", 153.8, 726.0, ""], ["Siam", 401.9, 834.9, ""], ["Silom", 365.3, 1052.7, ""], ["Sukhumvit", 692.2, 884.4, ""], ["Chatuchak", 515.3, 468.6, ""]]}, "phangan": {"full": [0, 0, 1005, 930], "allName": "Cała wyspa", "areas": [{"id": "zachod", "name": "Haad Yao i Srithanu", "sub": "zachodnie wybrzeże: zachody słońca, kawa, najlepsze kolacje", "note": ""}, {"id": "thongsala", "name": "Thong Sala i Nai Wok", "sub": "port, centrum wyspy, plaże na dzień", "note": ""}, {"id": "bantai", "name": "Ban Tai", "sub": "południe: widoki na zachód słońca, masaż, siłka", "note": ""}, {"id": "haadrin", "name": "Za Haad Rin", "sub": "południowo-wschodni cypel", "note": ""}, {"id": "polnoc", "name": "Chaloklum", "sub": "północ wyspy: wypad na cały dzień", "note": ""}], "places": [{"area": "zachod", "cat": "plaze", "must": true, "name": "Zen Beach", "lat": 9.7577607, "lng": 99.961105, "text": "Koniecznie na zachód słońca, ale też w dzień na opalanie. Jak pójdziecie w prawo, jest plaża nudystów.", "url": "https://maps.google.com/?cid=9295405370379873463", "x": 183.9, "y": 343.4}, {"area": "zachod", "cat": "plaze", "must": true, "name": "Nang Sabai", "lat": 9.7768322, "lng": 99.96707, "text": "Na zachód słońca i na chill w ciągu dnia. Basen, leżaki, palmy. Życie tam jest lepsze.", "url": "https://maps.app.goo.gl/MUW924T7r7ThGRAA6", "x": 219.2, "y": 229.0}, {"area": "zachod", "cat": "jedzenie", "must": true, "name": "Thai Element", "lat": 9.7533377, "lng": 99.9684628, "text": "Najlepsza knajpa. Top: beef Massaman curry. Otwarte wieczorami, we wtorki zamknięte. Lepiej zarezerwować.", "url": "https://maps.google.com/?cid=8587953832893323101", "x": 227.5, "y": 370.0}, {"area": "zachod", "cat": "jedzenie", "must": true, "name": "Ann Restaurant", "lat": 9.7540177, "lng": 99.9659752, "text": "Wszystko dobre, ale KHAO SOI tutaj rozpierdala.", "url": "https://maps.app.goo.gl/7ZWKV7XCdXETDfM26", "x": 212.7, "y": 365.9}, {"area": "zachod", "cat": "jedzenie", "must": false, "name": "Satipot Persian Experience", "lat": 9.7493671, "lng": 99.9762331, "text": "Pyszna szama.", "url": "https://maps.google.com/?cid=7886653533531602684", "x": 273.4, "y": 393.8}, {"area": "zachod", "cat": "jedzenie", "must": false, "name": "Mama Kop", "lat": 9.760756, "lng": 99.966137, "text": "Dobre jedzonko.", "url": "https://maps.app.goo.gl/x34Fc6jSxo2Qy6Td6", "x": 213.7, "y": 325.5}, {"area": "zachod", "cat": "jedzenie", "must": false, "name": "Sticky Island Cafe", "lat": 9.7532138, "lng": 99.9745131, "text": "Też git miejsce na jedzenie.", "url": "https://maps.google.com/?cid=8004650165387397942", "x": 263.2, "y": 370.7}, {"area": "zachod", "cat": "kawa", "must": true, "name": "Bubba's Roastery", "lat": 9.7745094, "lng": 99.9674955, "text": "Top śniadanie. To ich palarnia kawy przy Haad Yao. Druga kawiarnia jest w Ban Tai.", "url": "https://maps.google.com/?cid=190494508881229004", "x": 221.7, "y": 242.9}, {"area": "zachod", "cat": "kawa", "must": false, "name": "Piratenbar", "lat": 9.7721237, "lng": 99.9615778, "text": "Fajny spot na kawę.", "url": "https://maps.app.goo.gl/oA5nU4HUq3yRT8Z69", "x": 186.7, "y": 257.3}, {"area": "zachod", "cat": "kawa", "must": false, "name": "Pura Vida Beach", "lat": 9.7455375, "lng": 99.9760469, "text": "Śniadania na plaży.", "url": "https://maps.app.goo.gl/iczik36DvZipMorK9", "x": 272.3, "y": 416.8}, {"area": "zachod", "cat": "kawa", "must": true, "name": "Deli Devi", "lat": 9.7509775, "lng": 99.978185, "text": "TOP açaí bowl!!! TOP, TOP, TOP.", "url": "https://maps.app.goo.gl/vMSDdRDKR3Q9J9oK9", "x": 285.0, "y": 384.1}, {"area": "zachod", "cat": "jedzenie", "must": false, "name": "Mama Market (market w Srithanu)", "lat": 9.7585157, "lng": 99.9659981, "text": "Cały market jest teraz fajny i odpimpowany. Otwarty co wieczór od ok. 16:00, przejdźcie się na kolację.", "url": "https://maps.google.com/?cid=18237177933592445618", "x": 212.9, "y": 338.9}, {"area": "zachod", "cat": "wellness", "must": true, "name": "Xantiva Health Club", "lat": 9.7507484, "lng": 99.9734707, "text": "Sauna + ice bath. Raj na ziemi, koniecznie do zrobienia.", "url": "https://maps.app.goo.gl/woh4YqTBnj3xC6vo8", "x": 257.1, "y": 385.5}, {"area": "zachod", "cat": "wellness", "must": true, "name": "Orion Healing", "lat": 9.751892, "lng": 99.966052, "text": "Tutaj na jogę. Zajebisty spot.", "url": "https://maps.app.goo.gl/x9azJ4e9X7Z7PSTK7", "x": 213.2, "y": 378.6}, {"area": "thongsala", "cat": "prom", "must": false, "name": "Port Thong Sala", "lat": 9.709001, "lng": 99.984189, "text": "Tu przypływa większość promów z Koh Samui. Prom powrotny na Samui zarezerwujcie wcześniej, na dzień wylotu z zapasem czasu.", "url": "https://maps.google.com/?cid=15511786759845845019", "x": 320.5, "y": 636.0}, {"area": "thongsala", "cat": "plaze", "must": false, "name": "Amsterdam Bar", "lat": 9.724728, "lng": 99.9788598, "text": "Na zachód słońca.", "url": "https://maps.app.goo.gl/nbFz9E12DbXLwkWa9", "x": 288.9, "y": 541.6}, {"area": "thongsala", "cat": "plaze", "must": false, "name": "Siam Cookies Cottage", "lat": 9.723008, "lng": 99.976746, "text": "Fajna knajpa na plaży, taka na dzień. Obok jest ładna plaża, na której nie ma ludzi.", "url": "https://maps.app.goo.gl/XrDYxrWeocDksc3XA", "x": 276.4, "y": 552.0}, {"area": "thongsala", "cat": "jedzenie", "must": false, "name": "MYTHAI BURGERS Thong Sala", "lat": 9.7087313, "lng": 99.9976869, "text": "Mój ulubiony burger, jakbyście mieli ochotę zjeść coś innego. Druga lokalizacja jest w Chaloklum.", "url": "https://maps.google.com/?cid=2370065452052924189", "x": 400.3, "y": 637.6}, {"area": "thongsala", "cat": "sport", "must": false, "name": "Martial Arts Academy", "lat": 9.7359575, "lng": 99.9802079, "text": "Druga siłownia Muay Thai, ale w drugiej kolejności: najpierw idźcie do Rittisak, a tu dopiero potem.", "url": "https://maps.app.goo.gl/kcCezkfVVhTHBCR78", "x": 296.9, "y": 474.3}, {"area": "thongsala", "cat": "impreza", "must": false, "name": "Bluerama", "lat": 9.721345, "lng": 99.980263, "text": "Imprezka w sobotę w dzień.", "url": "https://maps.app.goo.gl/ENwo1Yk3siJropA37", "x": 297.2, "y": 561.9}, {"area": "thongsala", "cat": "jedzenie", "must": true, "name": "Grilled Fish Miang", "lat": 9.7180809, "lng": 99.9997819, "text": "Tu jest dojebana rybka! Grillowana ryba, którą zawija się w liście sałaty z makaronem, ziołami i sosem.", "url": "https://maps.google.com/?cid=12895149910782977758", "x": 412.7, "y": 581.5}, {"area": "thongsala", "cat": "jedzenie", "must": true, "name": "Uncle Teum's Duck Noodle", "lat": 9.7258129, "lng": 100.0004882, "text": "Tu jest dojebana kaczka. Lokalna knajpa: tanio, duże porcje, w środku staw z wodospadem.", "url": "https://maps.google.com/?cid=11323638634923299137", "x": 416.8, "y": 535.1}, {"area": "thongsala", "cat": "kawa", "must": true, "name": "Common Grounds Coffee", "lat": 9.7391152, "lng": 99.9903906, "text": "Zajebisty spot na śniadanie.", "url": "https://maps.google.com/?cid=8791151036059895016", "x": 357.1, "y": 455.3}, {"area": "bantai", "cat": "plaze", "must": false, "name": "Secret Mountain", "lat": 9.721418, "lng": 100.01441, "text": "Ładnie na zachód słońca. Bar na wzgórzu z widokiem na Samui, basen za opłatą. Droga stroma: jeśli pijecie, weźcie taksówkę.", "url": "https://maps.google.com/?cid=9692026732218417095", "x": 499.2, "y": 561.5}, {"area": "bantai", "cat": "plaze", "must": false, "name": "Apichada View Point", "lat": 9.706306, "lng": 100.03966, "text": "Widoczek śliczny. Bar z widokiem na Samui, zwykle bez tłumów. Droga stroma i wyboista.", "url": "https://maps.google.com/?cid=3309105644910614937", "x": 648.5, "y": 652.2}, {"area": "bantai", "cat": "wellness", "must": true, "name": "Lavella Spa", "lat": 9.7054378, "lng": 100.0102091, "text": "Masaż tylko tu.", "url": "https://maps.app.goo.gl/n2R5sqv9m4FEv2Dw9", "x": 474.3, "y": 657.4}, {"area": "bantai", "cat": "kawa", "must": false, "name": "Bubba's Coffee Baan Tai", "lat": 9.7003333, "lng": 100.0206323, "text": "Top śniadanie, druga lokalizacja Bubba's. To ich pierwsza, oryginalna kawiarnia.", "url": "https://maps.google.com/?cid=1568767918401778018", "x": 536.0, "y": 688.0}, {"area": "bantai", "cat": "sport", "must": false, "name": "WILD WOOD Beach Fitness", "lat": 9.698831, "lng": 100.0222877, "text": "Siłka z ciężarami z drewna, przy plaży.", "url": "https://maps.app.goo.gl/EeaVixMQoannLp1J6", "x": 545.8, "y": 697.0}, {"area": "haadrin", "cat": "jedzenie", "must": false, "name": "Grand View Café & Bar", "lat": 9.6831942, "lng": 100.0554605, "text": "Nowe miejsce w starym hotelu stylizowanym na świątynię.", "url": "https://maps.app.goo.gl/4ih15rdyZrJKZyxH8", "x": 741.9, "y": 790.8}, {"area": "polnoc", "cat": "plaze", "must": true, "name": "Malibu Beach", "lat": 9.7898115, "lng": 100.0009877, "text": "Moja ukochana plaża, najlepsza na świecie. Koniecznie musicie tam iść.", "url": "https://maps.google.com/?cid=16926728062172875224", "x": 419.8, "y": 151.1}, {"area": "polnoc", "cat": "jedzenie", "must": false, "name": "Kaif", "lat": 9.7867236, "lng": 100.0038719, "text": "Świetne jedzenie przy plaży. Jest tuż obok Malibu Beach, więc idealnie na obiad tego samego dnia.", "url": "https://maps.google.com/?cid=18338961306205525169", "x": 436.9, "y": 169.7}, {"area": "polnoc", "cat": "jedzenie", "must": false, "name": "Cucina Italiana", "lat": 9.7865619, "lng": 100.0046005, "text": "Tu jest przepyszne włoskie jedzenie. Tuż obok Kaif i Malibu Beach.", "url": "https://maps.app.goo.gl/N1ADnGhvHTDGSitz5", "x": 441.2, "y": 170.6}, {"area": "polnoc", "cat": "sport", "must": false, "name": "Rittisak Muay Thai", "lat": 9.780426, "lng": 100.0074603, "text": "Tu na trening Muay Thai. Właścicielką jest Holly: jak będziecie, pozdrówcie ją ode mnie! Walki są na wyspie codziennie, plakaty z terminami publikuje Instagram @koh_phangan_live. Na galę po prostu jedziecie i kupujecie bilet przed wejściem. Musicie iść na walkę amatorów, to jest zajebiste.", "url": "https://maps.google.com/?cid=4387654990126144504", "x": 458.1, "y": 207.4}, {"area": "polnoc", "cat": "jedzenie", "must": false, "name": "MYTHAI BURGERS Chaloklum", "lat": 9.7879231, "lng": 99.997013, "text": "Mój ulubiony burger, jakbyście mieli ochotę zjeść coś innego. Druga lokalizacja jest w Thong Sala.", "url": "https://maps.app.goo.gl/bxiLrBMuZt4wsLwP8", "x": 396.3, "y": 162.5}, {"area": "polnoc", "cat": "plaze", "must": false, "name": "Paradise Waterfall", "lat": 9.7784542, "lng": 100.0074388, "text": "Fajny wodospad, można się kąpać. Niedaleko jest najwyższy punkt wyspy, Khao Ra, na który można wejść. Może coś dla Grzesia? W porze suchej wody bywa mało.", "url": "https://maps.google.com/?cid=2911656834660059055", "x": 457.9, "y": 219.3}], "plan": [{"day": "Dzień 1", "title": "Przyjazd, Srithanu i pierwszy zachód słońca", "steps": [{"t": "Prom z Samui do Thong Sala, zameldowanie i odbiór skuterów z Pakapao (napiszcie do nich dzień albo dwa wcześniej).", "p": "Port Thong Sala"}, {"t": "Obiad: dojebana rybka.", "p": "Grilled Fish Miang"}, {"t": "Popołudnie i zachód słońca na Zen Beach. Jak pójdziecie w prawo, jest plaża nudystów.", "p": "Zen Beach"}, {"t": "Kolacja: khao soi w Ann Restaurant albo Massaman curry w Thai Element (nie we wtorek, zarezerwujcie).", "p": "Ann Restaurant"}, {"t": "Na koniec spacer po markecie w Srithanu.", "p": "Mama Market (market w Srithanu)"}]}, {"day": "Dzień 2", "title": "Chill, joga i sauna na zachodzie wyspy", "steps": [{"t": "Śniadanie: TOP açaí bowl w Deli Devi albo śniadanie w Bubba's Roastery.", "p": "Deli Devi"}, {"t": "Joga w Orion Healing.", "p": "Orion Healing"}, {"t": "Sauna i ice bath w Xantivie. Raj na ziemi.", "p": "Xantiva Health Club"}, {"t": "Popołudnie na basenie i leżakach w Nang Sabai, zostańcie na zachód słońca.", "p": "Nang Sabai"}, {"t": "Kolacja w Satipot (zarezerwujcie). Zapasowo Mama Kop albo Sticky Island Cafe.", "p": "Satipot Persian Experience"}]}, {"day": "Dzień 3", "title": "Północ: Malibu, Muay Thai i wodospad", "steps": [{"t": "Śniadanie w Common Grounds, po drodze na północ.", "p": "Common Grounds Coffee"}, {"t": "Trening w Rittisak. Pozdrówcie Holly ode mnie.", "p": "Rittisak Muay Thai"}, {"t": "Malibu Beach, moja ukochana plaża. Zostańcie tam długo.", "p": "Malibu Beach"}, {"t": "Obiad w Kaif, tuż przy plaży.", "p": "Kaif"}, {"t": "Paradise Waterfall i kąpiel. Grzesiu może iść dalej na Khao Ra.", "p": "Paradise Waterfall"}, {"t": "Kolacja: włoskie w Cucina Italiana, potem walka amatorów. Gdzie są walki, sprawdźcie na Instagramie @koh_phangan_live, bilet kupicie przed wejściem.", "p": "Cucina Italiana"}]}, {"day": "Dzień 4", "title": "Południe: siłka, masaż i widoki", "steps": [{"t": "Śniadanie w Bubba's w Baan Tai.", "p": "Bubba's Coffee Baan Tai"}, {"t": "Siłka z ciężarami z drewna.", "p": "WILD WOOD Beach Fitness"}, {"t": "Masaż w Lavella Spa. Masaż tylko tu.", "p": "Lavella Spa"}, {"t": "Obiad: dojebana kaczka u Uncle Teum.", "p": "Uncle Teum's Duck Noodle"}, {"t": "Zachód słońca w Secret Mountain albo w Apichada. Jeśli pijecie, weźcie taksówkę.", "p": "Secret Mountain"}, {"t": "Prom powrotny na Samui następnego dnia rano, zarezerwowany wcześniej!", "p": "Port Thong Sala"}]}], "plan_extra": "Jeśli któryś dzień wypadnie w sobotę, w ciągu dnia idźcie na imprezkę w Bluerama. Jak będziecie chcieli drugi trening Muay Thai, po Rittisak idźcie do Martial Arts Academy w Wok Tum. Na zapas, jak zostanie wam czasu: Amsterdam Bar na zachód słońca, Siam Cookies Cottage na plażę bez ludzi, kawa w Piratenbar, śniadanie w Pura Vida, Grand View za Haad Rin, Common Grounds jeszcze raz.", "cats": [{"id": "plaze", "name": "Plaże, widoki, natura", "col": "plaze"}, {"id": "jedzenie", "name": "Jedzenie", "col": "jedzenie"}, {"id": "kawa", "name": "Kawa i śniadania", "col": "kawa"}, {"id": "wellness", "name": "Joga, masaż, sauna", "col": "wellness"}, {"id": "sport", "name": "Sport", "col": "sport"}, {"id": "impreza", "name": "Impreza", "col": "impreza"}, {"id": "prom", "name": "Port", "col": "prom"}], "labels": [["Haad Yao", 100.5, 252.0, ""], ["Srithanu", 94.6, 378.0, ""], ["Hin Kong", 147.8, 462.0, ""], ["Thong Sala", 189.2, 612.0, ""], ["Ban Tai", 532.2, 750.0, ""], ["Haad Rin", 768.8, 906.0, ""], ["Chaloklum", 325.3, 42.0, ""], ["Thong Nai Pan", 869.3, 192.0, ""], ["Bottle Beach", 668.2, 42.0, ""], ["↓ Koh Samui, ok. 20 km promem", 330, 905, ""]]}};
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const NS = "http://www.w3.org/2000/svg";
+function esc(s){ return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+function rich(s){
+  return esc(s).replace(/https?:\/\/[^\s<]+[^\s<.,;:)]/g, u=>`<a href="${u}" target="_blank" rel="noopener">${u.replace(/^https?:\/\/(www\.)?/,'')}</a>`)
+    .replace(/(^|\s)@koh_phangan_live/g,'$1<a href="https://www.instagram.com/koh_phangan_live" target="_blank" rel="noopener">@koh_phangan_live</a>');
+}
+
+function setupGuide(key){
+  const C = DATA[key], root = document.getElementById('view-'+key);
+  const q = s => root.querySelector(s);
+  const svg = q('svg.map'), pinsG = q('.pins'), labelsG = q('.labels'), card = q('.card'), mapframe = q('.mapframe');
+  const FULL = C.full.slice(), AR = FULL[2]/FULL[3];
+  const st = {area:'all', cat:'all', sel:null};
+  let vb = FULL.slice();
+  const catName = Object.fromEntries(C.cats.map(c=>[c.id,c.name]));
+  C.places.forEach((p,i)=>{ p.n=i+1; });
+  const byName = Object.fromEntries(C.places.map(p=>[p.name,p]));
+
+  [{id:'all',name:C.allName}, ...C.areas].forEach(a=>{
+    const b=document.createElement('button'); b.className='tab'; b.dataset.id=a.id; b.textContent=a.name;
+    b.setAttribute('aria-pressed', a.id==='all'); b.onclick=()=>setArea(a.id); q('.areas').appendChild(b);
+  });
+  [{id:'all',name:'Wszystko'}, ...C.cats].forEach(c=>{
+    const b=document.createElement('button'); b.className='chip'; b.dataset.id=c.id;
+    if(c.id!=='all'){ const d=document.createElement('span'); d.className='dot'; d.style.setProperty('--c',`var(--c-${c.col})`); b.appendChild(d); }
+    b.appendChild(document.createTextNode(c.name));
+    b.setAttribute('aria-pressed', c.id==='all'); b.onclick=()=>setCat(c.id); q('.cats').appendChild(b);
+  });
+  const colOf = id => (C.cats.find(c=>c.id===id)||{col:'prom'}).col;
+
+  const labelEls = C.labels.map(([t,x,y,cls])=>{
+    const e=document.createElementNS(NS,'text'); e.setAttribute('class','lbl'+(cls?' '+cls:'')); e.setAttribute('x',x); e.setAttribute('y',y);
+    e.setAttribute('text-anchor','middle'); e.textContent=t; labelsG.appendChild(e); return e;
+  });
+  const pinEls = C.places.map(p=>{
+    const g=document.createElementNS(NS,'g'); g.setAttribute('class','pin'); g.setAttribute('tabindex','0');
+    g.setAttribute('role','button'); g.setAttribute('aria-label', p.n+'. '+p.name);
+    g.innerHTML=`<circle class="ring" cx="${p.x}" cy="${p.y}"/><circle class="b" cx="${p.x}" cy="${p.y}" fill="var(--c-${colOf(p.cat)})"/><text x="${p.x}" y="${p.y}">${p.n}</text>`;
+    g.addEventListener('click', e=>{ e.stopPropagation(); select(p.n); });
+    g.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); select(p.n);} });
+    pinsG.appendChild(g); return g;
+  });
+  svg.addEventListener('click', ()=>select(null));
+
+  function sizePins(){
+    const w=vb[2], r=w*0.021, f=w*0.022, lf=w*0.024;
+    pinEls.forEach(g=>{ const [ring,b,t]=g.children;
+      ring.setAttribute('r', r*1.55); ring.setAttribute('stroke-width', w*0.005);
+      b.setAttribute('r', r); b.setAttribute('stroke-width', w*0.004); t.setAttribute('font-size', f); });
+    labelEls.forEach(e=>{ e.setAttribute('font-size', lf); e.style.strokeWidth=(w*0.006)+'px'; });
+  }
+  function applyVB(){ svg.setAttribute('viewBox', vb.map(v=>v.toFixed(1)).join(' ')); sizePins(); }
+  function areaBox(id){
+    if(id==='all') return FULL.slice();
+    const ps=C.places.filter(p=>p.area===id);
+    const xs=ps.map(p=>p.x), ys=ps.map(p=>p.y);
+    let x0=Math.min(...xs), x1=Math.max(...xs), y0=Math.min(...ys), y1=Math.max(...ys);
+    let w=Math.max(x1-x0,180)*1.7, h=Math.max(y1-y0,160)*1.7;
+    if(w/h>AR) h=w/AR; else w=h*AR;
+    return [(x0+x1)/2-w/2, (y0+y1)/2-h/2, w, h];
+  }
+  function animateTo(target){
+    if(reduce){ vb=target; applyVB(); return; }
+    const from=vb.slice(), t0=performance.now(), D=420;
+    function step(t){ const k=Math.min(1,(t-t0)/D), e=1-Math.pow(1-k,3);
+      vb=from.map((v,i)=>v+(target[i]-v)*e); applyVB(); if(k<1) requestAnimationFrame(step); }
+    requestAnimationFrame(step);
+  }
+  function setArea(id){
+    st.area=id; root.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-pressed', b.dataset.id===id));
+    animateTo(areaBox(id)); select(null); renderList();
+  }
+  function setCat(id){
+    st.cat=id; root.querySelectorAll('.chip').forEach(b=>b.setAttribute('aria-pressed', b.dataset.id===id));
+    C.places.forEach((p,i)=>pinEls[i].classList.toggle('off', id!=='all' && p.cat!==id));
+    if(st.sel && id!=='all' && C.places[st.sel-1].cat!==id) select(null);
+    renderList();
+  }
+  function moreLinks(p){ return p.more ? `<div class="more">${p.more.map(m=>`<a href="${m.url}" target="_blank" rel="noopener">${esc(m.label)}</a>`).join('')}</div>` : ''; }
+  function select(n){
+    st.sel=n;
+    pinEls.forEach((g,i)=>g.classList.toggle('sel', i+1===n));
+    root.querySelectorAll('li.item').forEach(li=>li.classList.toggle('hl', +li.dataset.n===n));
+    if(!n){ card.hidden=true; return; }
+    const p=C.places[n-1];
+    card.innerHTML=`<button class="close" aria-label="Zamknij">×</button>
+      <div class="meta"><span class="cat" style="--c:var(--c-${colOf(p.cat)})">${n}. ${esc(catName[p.cat]||'')}</span>${p.must?'<span class="must">Musicie</span>':''}</div>
+      <h3>${esc(p.name)}</h3><p>${rich(p.text)}</p>${moreLinks(p)}
+      <a class="go" href="${p.url}" target="_blank" rel="noopener">Otwórz w Mapach Google →</a>`;
+    card.querySelector('.close').onclick=e=>{ e.stopPropagation(); select(null); };
+    card.hidden=false;
+    card.scrollIntoView({block:'nearest', behavior: reduce?'auto':'smooth'});
+    pinsG.appendChild(pinEls[n-1]);
+  }
+  card.addEventListener('click', e=>e.stopPropagation());
+  function showOnMap(p){
+    if(st.cat!=='all' && p.cat!==st.cat) setCat('all');
+    if(st.area!=='all' && st.area!==p.area) setArea('all');
+    select(p.n); mapframe.scrollIntoView({behavior: reduce?'auto':'smooth', block:'start'});
+  }
+  function renderList(){
+    const list=q('.list'); list.innerHTML='';
+    C.areas.forEach(a=>{
+      if(st.area!=='all' && st.area!==a.id) return;
+      const ps=C.places.filter(p=>p.area===a.id && (st.cat==='all'||p.cat===st.cat));
+      if(!ps.length) return;
+      const s=document.createElement('section'); s.className='area';
+      s.innerHTML=`<header><h2>${esc(a.name)}</h2><p>${esc(a.sub)}</p></header>`+
+        (a.warn ? `<div class="warn">${rich(a.warn)}</div>` : '')+
+        (a.note && st.cat==='all' ? `<div class="areanote">${rich(a.note)}</div>` : '');
+      const ul=document.createElement('ul'); ul.className='items';
+      ps.forEach(p=>{
+        const li=document.createElement('li'); li.className='item'; li.dataset.n=p.n; li.style.setProperty('--c',`var(--c-${colOf(p.cat)})`);
+        if(st.sel===p.n) li.classList.add('hl');
+        li.innerHTML=`<button class="num" aria-label="Pokaż ${esc(p.name)} na mapie">${p.n}</button>
+          <div class="item-body"><div class="meta"><span class="cat">${esc(catName[p.cat]||'')}</span>${p.must?'<span class="must">Musicie</span>':''}</div>
+          <h3>${esc(p.name)}</h3><p>${rich(p.text)}</p>${moreLinks(p)}
+          <div class="links"><a class="go" href="${p.url}" target="_blank" rel="noopener">Mapy Google →</a><button class="item-btn">Pokaż na mapie</button></div></div>`;
+        li.querySelector('.num').onclick=()=>showOnMap(p); li.querySelector('.item-btn').onclick=()=>showOnMap(p);
+        ul.appendChild(li);
+      });
+      s.appendChild(ul); list.appendChild(s);
+    });
+  }
+  function renderPlan(){
+    const days=q('.days');
+    C.plan.forEach(d=>{
+      const el=document.createElement('article'); el.className='day';
+      el.innerHTML=`<div class="dl">${esc(d.day)}</div><h3>${esc(d.title)}</h3>`;
+      const ol=document.createElement('ol');
+      d.steps.forEach(s=>{
+        const ps=[].concat(s.p||[]).map(n=>byName[n]).filter(Boolean);
+        const li=document.createElement('li');
+        const nums=ps.length ? `<div class="nums">${ps.map(p=>`<button class="num" style="--c:var(--c-${colOf(p.cat)})" data-n="${p.n}" aria-label="Pokaż ${esc(p.name)} na mapie">${p.n}</button>`).join('')}</div>` : `<span class="dot0" aria-hidden="true">•</span>`;
+        li.innerHTML=`${nums}<span>${rich(s.t)}</span>`;
+        li.querySelectorAll('button.num').forEach(b=>b.onclick=()=>showOnMap(C.places[+b.dataset.n-1]));
+        ol.appendChild(li);
+      });
+      el.appendChild(ol); days.appendChild(el);
+    });
+    const ex=q('.extra'); if(ex) ex.innerHTML=rich(C.plan_extra||'');
+  }
+  applyVB(); renderList(); renderPlan();
+}
+setupGuide('bangkok'); setupGuide('phangan');
+
+const VIEWS=['bangkok','phangan'];
+function show(v, push){
+  if(!VIEWS.includes(v)) v='bangkok';
+  VIEWS.forEach(k=>{ document.getElementById('view-'+k).hidden = k!==v; document.getElementById('sw-'+k).setAttribute('aria-pressed', k===v); });
+  if(push && location.hash!=='#'+v){ try{ history.replaceState(null,'','#'+v); }catch(e){ location.hash=v; } }
+}
+VIEWS.forEach(k=>document.getElementById('sw-'+k).addEventListener('click',()=>{ show(k,true); document.getElementById('view-'+k).scrollIntoView({behavior: reduce?'auto':'smooth', block:'start'}); }));
+window.addEventListener('hashchange',()=>show(location.hash.slice(1)));
+show(location.hash.slice(1));
+</script>
+
+</body>
+</html>
