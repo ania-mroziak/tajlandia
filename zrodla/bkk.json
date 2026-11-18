@@ -1,0 +1,300 @@
+{
+ "plan": [
+  {
+   "day": "Dzień 1",
+   "title": "Stare miasto: świątynie, pad thai i Muay Thai",
+   "steps": [
+    {
+     "t": "Rano Wielki Pałac, potem pieszo do Wat Pho, potem promem z przystani Tha Tien do Wat Arun. Pamiętajcie: zakryte ramiona i kolana!",
+     "l": [
+      "Wielki Pałac Królewski",
+      "Wat Pho",
+      "Wat Arun"
+     ]
+    },
+    {
+     "t": "Obiad: pad thai w Thipsamai, z mini krewetkami.",
+     "l": [
+      "Thipsamai"
+     ]
+    },
+    {
+     "t": "Po południu odpoczynek w hotelu, bo wtedy jest największy upał.",
+     "l": []
+    },
+    {
+     "t": "Wieczorem gala Muay Thai na Rajadamnern (bilety kupcie wcześniej online), a potem Khao San Road. Ping pong show wedle uznania.",
+     "l": [
+      "Rajadamnern Stadium",
+      "Khao San Road"
+     ]
+    }
+   ]
+  },
+  {
+   "day": "Dzień 2",
+   "title": "Trening, park, zupka, zakupy i Chinatown",
+   "steps": [
+    {
+     "t": "Rano trening Muay Thai w Yokkao.",
+     "l": [
+      "Yokkao Training Center"
+     ]
+    },
+    {
+     "t": "Potem park Lumpini. Wypatrujcie waranów.",
+     "l": [
+      "Park Lumpini"
+     ]
+    },
+    {
+     "t": "Obiad: zajebista zupka w Khao-Sō-i.",
+     "l": [
+      "Khao-Sō-i"
+     ]
+    },
+    {
+     "t": "Po południu Siam Center, Siam Paragon i MBK. W Siam Center jest After You, więc kakigori, po jednym na głowę!",
+     "l": [
+      "Siam Center"
+     ]
+    },
+    {
+     "t": "Wieczorem Chinatown: jedzenie z ulicy, zdjęcia i masaż na koniec.",
+     "l": [
+      "Chinatown (Yaowarat)"
+     ]
+    }
+   ]
+  },
+  {
+   "day": "Dzień 3",
+   "title": "Północ miasta (najlepiej w sobotę albo w niedzielę)",
+   "steps": [
+    {
+     "t": "Rano Chatuchak Weekend Market, zanim zrobi się upał. Zobaczymy, czy Grzesiu to przeżyje.",
+     "l": [
+      "Chatuchak Weekend Market"
+     ]
+    },
+    {
+     "t": "Po południu muzeum MOCA, totalnie warto. Sprawdźcie godziny otwarcia.",
+     "l": [
+      "MOCA Bangkok"
+     ]
+    },
+    {
+     "t": "Wieczór do wyboru: rooftop Tichuca na zachód słońca, drugi pad thai w Thipsamai, drugie kakigori albo gala w One Lumpinee, jeśli pierwszego dnia nie wyszło z Rajadamnern.",
+     "l": [
+      "Tichuca Rooftop Bar",
+      "One Lumpinee"
+     ]
+    },
+    {
+     "t": "Następnego dnia lot na Koh Samui i od razu prom na Phangan.",
+     "l": []
+    }
+   ]
+  }
+ ],
+ "groups": [
+  {
+   "id": "swiatynie",
+   "name": "Świątynie",
+   "warn": "MUSICIE BYĆ OKRYCI. Ramiona i kolana zakryte: długie spodnie i koszulka z rękawem. Żadnych szortów, koszulek bez rękawów ani podartych spodni. W Wielkim Pałacu sprawdzają to na bramce i nie wpuszczą was. Przy wejściu można wypożyczyć ubranie (ok. 200 THB za rzecz). W budynkach świątyń zdejmujecie buty.",
+   "items": [
+    {
+     "name": "Wielki Pałac Królewski",
+     "col": "wellness",
+     "must": true,
+     "text": "Grand Palace, razem ze Szmaragdowym Buddą. Wejście 500 THB, 08:30–16:30, ostatnie wejście 15:30. Jeśli ktoś przy pałacu powie, że „dziś zamknięte”, i zaproponuje tuk-tuka gdzie indziej, to przekręt. Idźcie prosto do wejścia.",
+     "url": "https://maps.google.com/?cid=3056950040631135297"
+    },
+    {
+     "name": "Wat Pho",
+     "col": "wellness",
+     "must": true,
+     "text": "Świątynia Leżącego Buddy, kilka minut pieszo od pałacu. Wejście 300 THB, weźcie gotówkę.",
+     "url": "https://maps.google.com/?cid=9076048512320389678"
+    },
+    {
+     "name": "Wat Arun",
+     "col": "wellness",
+     "must": true,
+     "text": "Świątynia Świtu, po drugiej stronie rzeki. Z przystani Tha Tien płyniecie promem przez rzekę. Wejście 200 THB, gotówka.",
+     "url": "https://maps.google.com/?cid=9727099538087655581"
+    }
+   ]
+  },
+  {
+   "id": "miasto",
+   "name": "Musicie zobaczyć",
+   "items": [
+    {
+     "name": "Chinatown (Yaowarat)",
+     "col": "plaze",
+     "must": true,
+     "text": "Totalnie warto tam iść. Stąd są wszystkie turystyczne zdjęcia z Bangkoku, jest mega klimat i pyszne jedzonko. Najlepiej wieczorem: jedzenie z ulicy, a potem masaż.",
+     "url": "https://maps.app.goo.gl/jpMehF8GuuC2FmUr7"
+    },
+    {
+     "name": "Khao San Road",
+     "col": "plaze",
+     "must": true,
+     "text": "Ulica koszmaru, ale trzeba ją zobaczyć. Turystycznie, uszy bolą, muzyka co 3 sekundy inna. Ja przeszłam i marzyłam, żeby się już skończyła. Ale musicie zobaczyć ten rozpierdziel Bangkoku. Pewnie zaproszą was na ping pong show: wedle uznania, bawcie się chłopcy. Jeśli pójdziecie, ustalcie cenę wejścia i drinków przed wejściem.",
+     "url": "https://maps.app.goo.gl/TGmRLt3obyQHgw5E6"
+    },
+    {
+     "name": "Park Lumpini",
+     "col": "plaze",
+     "must": true,
+     "text": "Koniecznie musicie tam iść. Zajebisty, kultowy park w środku miasta. Wypatrujcie waranów, chodzą tam sobie po trawie i pływają w stawach.",
+     "url": "https://maps.google.com/?cid=12394434568566794550"
+    },
+    {
+     "name": "MOCA Bangkok",
+     "col": "plaze",
+     "must": false,
+     "text": "Muzeum sztuki współczesnej, totalnie warto. Jest daleko na północy, więc połączcie je z Chatuchak.",
+     "url": "https://maps.app.goo.gl/X5YpLbvHRDtu1XR5A"
+    },
+    {
+     "name": "Tichuca Rooftop Bar",
+     "col": "prom",
+     "must": false,
+     "text": "Rooftop bar z wielkim świecącym drzewem-meduzą i widokiem na całe miasto. Alternatywa na wieczór. Otwarte od ok. 17:00. Wejście bez opłat, ale trzeba kupić drinka. Nie ma rezerwacji, często jest kolejka, więc przyjdźcie wcześnie, najlepiej na zachód słońca. Weźcie paszport i ubierzcie się porządnie: bez klapek, sportowych ciuchów i koszulek bez rękawów.",
+     "url": "https://maps.google.com/?cid=3170203217852474558",
+     "more": [
+      {
+       "label": "Zobacz na TikToku",
+       "url": "https://vm.tiktok.com/ZN8aQrFoK/"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "jedzenie",
+   "name": "Jedzenie",
+   "items": [
+    {
+     "name": "Thipsamai",
+     "col": "jedzenie",
+     "must": true,
+     "text": "Najlepszy pad thai na świecie. Bierzcie z mini krewetkami. Liczę, że zjecie go więcej niż raz! Często jest kolejka, ale warto.",
+     "url": "https://maps.app.goo.gl/kbd4oL8Jih4aPSfLA"
+    },
+    {
+     "name": "Khao-Sō-i",
+     "col": "jedzenie",
+     "must": true,
+     "text": "Zajebista zupka, koniecznie trzeba zjeść. Khao soi to zupa curry z północy Tajlandii, z miękkim makaronem w środku i chrupiącym na wierzchu.",
+     "url": "https://maps.app.goo.gl/ag86BA6oupNL4nhG6"
+    },
+    {
+     "name": "After You",
+     "col": "kawa",
+     "must": true,
+     "text": "Kakigori. Jak to jadłam, to myślałam, że się popłaczę. Najlepszy deser EVER. Weźcie sobie po jednym na głowę, dacie radę. Są różne smaki: mango, Thai tea, hojicha, sernik truskawkowy. Na wyspach go nie ma, więc zjedzcie w Bangkoku, najlepiej kilka razy.",
+     "url": "https://maps.app.goo.gl/fDLbQdFRV9B6dNPw8",
+     "more": [
+      {
+       "label": "Terminal 21",
+       "url": "https://maps.app.goo.gl/fDLbQdFRV9B6dNPw8"
+      },
+      {
+       "label": "Siam Center",
+       "url": "https://maps.google.com/?cid=5771569288426755402"
+      },
+      {
+       "label": "Siam Paragon",
+       "url": "https://maps.google.com/?cid=18316853966416162195"
+      },
+      {
+       "label": "CentralWorld",
+       "url": "https://maps.google.com/?cid=4706676101089833158"
+      },
+      {
+       "label": "Silom",
+       "url": "https://maps.google.com/?cid=5700973471693487760"
+      },
+      {
+       "label": "ICONSIAM",
+       "url": "https://maps.google.com/?cid=14537189333046184428"
+      },
+      {
+       "label": "Thonglor",
+       "url": "https://maps.google.com/?cid=3475250046182095589"
+      },
+      {
+       "label": "Asiatique",
+       "url": "https://maps.google.com/?cid=3793654706767334441"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "muaythai",
+   "name": "Muay Thai",
+   "note": "Na galę w Bangkoku polecam kupić bilet online, wcześniej.",
+   "items": [
+    {
+     "name": "Yokkao Training Center",
+     "col": "sport",
+     "must": false,
+     "text": "Proszę, idźcie na trening tutaj.",
+     "url": "https://maps.app.goo.gl/rkQygGKZ5F1khirL6"
+    },
+    {
+     "name": "Rajadamnern Stadium",
+     "col": "sport",
+     "must": true,
+     "text": "Gala Muay Thai, na starym mieście, blisko Khao San. Musicie, nie wpuszczę was z powrotem, niestety. Przykro mi!",
+     "url": "https://maps.app.goo.gl/NvGJcihmSfPodTeeA"
+    },
+    {
+     "name": "One Lumpinee",
+     "col": "sport",
+     "must": false,
+     "text": "Druga opcja na galę, daleko na północy miasta.",
+     "url": "https://maps.app.goo.gl/vMersdsUa3FnVVh17"
+    }
+   ]
+  },
+  {
+   "id": "zakupy",
+   "name": "Zakupy",
+   "items": [
+    {
+     "name": "Chatuchak Weekend Market",
+     "col": "impreza",
+     "must": false,
+     "text": "Nie wiem, czy Grzesiu to przeżyje. Mega dużo chińszczyzny, zabawnie, totalnie Thai vibe. Otwarte w weekend. Idźcie rano, zanim zrobi się upał.",
+     "url": "https://maps.app.goo.gl/yDkdhtK4p1JmD9hW6"
+    },
+    {
+     "name": "Siam Center",
+     "col": "impreza",
+     "must": false,
+     "text": "Zakupy. Kolejka BTS, stacja Siam. W środku jest After You, więc kakigori macie po drodze.",
+     "url": "https://maps.google.com/?cid=11650808064083583788",
+     "more": [
+      {
+       "label": "Siam Paragon",
+       "url": "https://maps.google.com/?cid=11476178565854079331"
+      },
+      {
+       "label": "Siam Discovery",
+       "url": "https://maps.google.com/?cid=1826683215596908818"
+      },
+      {
+       "label": "MBK Center",
+       "url": "https://maps.google.com/?cid=4638341614504662750"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

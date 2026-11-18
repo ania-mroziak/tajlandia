@@ -1,0 +1,422 @@
+<title>Bangkok i Koh Phangan</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: one narrow column, phone first. A sticky "where are you" switch flips the whole page between Bangkok and Koh Phangan; each view = map, day plan, places by area. */
+:root{
+  --bg:#f2f5f1; --surface:#ffffff; --fg:#14302c; --muted:#5b726d; --line:#d6e0dc;
+  --sea:#cfe5e8; --sea-line:#b6d6db; --land:#eef0e1; --land-line:#9fb3a3; --city:#ecefe6; --river:#a9d2da;
+  --zone:#f5c542; --accent:#0f6e69; --warn-bg:#fff4d6; --warn-line:#e4b632; --warn-fg:#4a3500;
+  --c-plaze:#0d8aa0; --c-jedzenie:#d0522a; --c-kawa:#8a5a3b; --c-wellness:#8a63c8; --c-sport:#2f7a3a; --c-impreza:#d23c88; --c-prom:#34495e;
+  --display:"Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --body:"Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0e1918; --surface:#152321; --fg:#e6efec; --muted:#9db1ac; --line:#26393a;
+  --sea:#11303a; --sea-line:#1a4250; --land:#1e2b24; --land-line:#3f5a4c; --city:#18241f; --river:#1d4a57;
+  --zone:#e3b43a; --accent:#5cc6be; --warn-bg:#2e2610; --warn-line:#a8832a; --warn-fg:#f3dfa6;
+  --c-plaze:#34b6cc; --c-jedzenie:#f07a4f; --c-kawa:#c38d68; --c-wellness:#ad8cec; --c-sport:#5db46a; --c-impreza:#f16aac; --c-prom:#8fa6bd;
+  color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --bg:#0e1918; --surface:#152321; --fg:#e6efec; --muted:#9db1ac; --line:#26393a;
+  --sea:#11303a; --sea-line:#1a4250; --land:#1e2b24; --land-line:#3f5a4c; --city:#18241f; --river:#1d4a57;
+  --zone:#e3b43a; --accent:#5cc6be; --warn-bg:#2e2610; --warn-line:#a8832a; --warn-fg:#f3dfa6;
+  --c-plaze:#34b6cc; --c-jedzenie:#f07a4f; --c-kawa:#c38d68; --c-wellness:#ad8cec; --c-sport:#5db46a; --c-impreza:#f16aac; --c-prom:#8fa6bd;
+  color-scheme:dark; }
+*{box-sizing:border-box}
+html{scroll-padding-top:calc(env(safe-area-inset-top, 0px) + 72px)}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.5;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:20px 48px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top, 0px);z-index:10;background:var(--bg)}
+.wrap{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.1}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+h1{font-size:clamp(32px,9vw,52px);font-weight:800;letter-spacing:-.01em}
+.lead{margin:8px 0 0;color:var(--muted);max-width:60ch}
+a{color:var(--accent)}
+button{font:inherit;color:inherit;cursor:pointer}
+
+.switch{position:sticky;top:env(safe-area-inset-top, 0px);z-index:5;background:var(--bg);padding-block:8px;margin-block:-8px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sw{border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:10px 12px;text-align:left;display:flex;flex-direction:column;gap:1px}
+.sw b{font-family:var(--display);font-size:20px;font-weight:800;line-height:1.1}
+.sw span{font-size:12px;color:var(--muted)}
+.sw[aria-pressed="true"]{background:var(--fg);border-color:var(--fg);color:var(--bg)}
+.sw[aria-pressed="true"] span{color:var(--bg);opacity:.75}
+
+.notes{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:620px){.notes{grid-template-columns:1fr}}
+.note{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;min-width:0}
+.note h2{font-size:17px;font-weight:600;display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.note p{margin:0}
+.note ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
+.note.key{border-color:var(--c-prom);border-width:2px}
+.swatch{width:22px;height:10px;border-radius:5px;background:var(--zone);opacity:.75;flex:none}
+.warn{background:var(--warn-bg);border:1px solid var(--warn-line);color:var(--warn-fg);border-radius:12px;padding:12px 14px}
+.warn strong{font-weight:700}
+
+.view{display:flex;flex-direction:column;gap:22px}
+.view[hidden]{display:none}
+.vhead h2{font-size:clamp(28px,7vw,38px);font-weight:800}
+.vhead p{margin:4px 0 0;color:var(--muted)}
+
+.controls{display:flex;flex-direction:column;gap:8px}
+.row{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.row::-webkit-scrollbar{display:none}
+.row-label{font-size:12px;color:var(--muted);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.tab,.chip{flex:none;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 13px;font-size:14px;white-space:nowrap}
+.tab[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.chip{display:flex;align-items:center;gap:7px}
+.chip .dot{width:10px;height:10px;border-radius:50%;background:var(--c)}
+.chip[aria-pressed="true"]{border-color:var(--fg);box-shadow:inset 0 0 0 1px var(--fg)}
+.sw:focus-visible,.tab:focus-visible,.chip:focus-visible,a:focus-visible,.item-btn:focus-visible,.close:focus-visible,.num:focus-visible,.pin:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.mapframe{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--line)}
+.mapframe.php{background:var(--sea)}
+.mapframe.bkk{background:var(--city)}
+svg.map{display:block;width:100%;height:auto;touch-action:manipulation}
+.island{fill:var(--land);stroke:var(--land-line);stroke-width:2;stroke-linejoin:round}
+.zone{fill:none;stroke:var(--zone);stroke-linecap:round;stroke-linejoin:round;opacity:.38}
+.coast{fill:none;stroke:var(--sea-line);stroke-width:14;stroke-linejoin:round}
+.river{fill:none;stroke:var(--river);stroke-width:16;stroke-linecap:round;stroke-linejoin:round}
+.lbl{fill:var(--muted);font-family:var(--body);font-weight:600;letter-spacing:.02em;paint-order:stroke;stroke-linejoin:round}
+.php .lbl{stroke:var(--sea)}
+.bkk .lbl{stroke:var(--city)}
+.lbl.water{fill:var(--accent);font-style:italic;font-weight:500}
+.pin{cursor:pointer}
+.pin circle.b{stroke:var(--surface)}
+.pin text{fill:#fff;font-family:var(--body);font-weight:600;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.pin .ring{fill:none;stroke:var(--fg);opacity:0}
+.pin.sel .ring{opacity:1}
+.pin.off{display:none}
+.card{position:relative;background:var(--surface);border:1px solid var(--fg);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;margin-top:-10px}
+.card h3{font-size:18px;font-weight:600;padding-right:34px}
+.card p{margin:0}
+.card[hidden]{display:none}
+.close{position:absolute;top:6px;right:6px;width:34px;height:34px;border-radius:50%;border:none;background:transparent;font-size:22px;line-height:1;color:var(--muted)}
+.meta{display:flex;gap:8px;align-items:center;font-size:12px;color:var(--muted);flex-wrap:wrap}
+.cat{display:inline-flex;align-items:center;gap:5px}
+.cat::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c)}
+.must{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:var(--zone);color:#2b2200;border-radius:4px;padding:1px 6px}
+.go{color:var(--accent);font-weight:600;text-decoration:none}
+.go:hover{text-decoration:underline}
+.more{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.more a{font-size:13px;border:1px solid var(--line);border-radius:999px;padding:3px 10px;text-decoration:none;color:var(--fg);background:var(--bg)}
+.hint{font-size:13px;color:var(--muted);margin:-12px 0 0}
+
+.plan{display:flex;flex-direction:column;gap:14px}
+.plan>header h2{font-size:26px;font-weight:800}
+.plan>header p{margin:2px 0 0;color:var(--muted)}
+.days{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:620px){.days{grid-template-columns:1fr}}
+.day{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;min-width:0;display:flex;flex-direction:column;gap:10px}
+.day .dl{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.day h3{font-size:18px;font-weight:600;margin-top:-6px}
+.day ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}
+.day li{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start}
+.nums{display:flex;gap:3px;flex-wrap:wrap;max-width:62px}
+.day .num{width:26px;height:26px;font-size:12px}
+.dot0{width:26px;height:26px;display:grid;place-items:center;color:var(--muted)}
+.extra{background:var(--surface);border:1px dashed var(--line);border-radius:10px;padding:10px 12px;margin:0}
+
+.list{display:flex;flex-direction:column;gap:28px}
+section.area{display:flex;flex-direction:column;gap:10px}
+section.area>header h2{font-size:22px;font-weight:800}
+section.area>header p{margin:2px 0 0;color:var(--muted)}
+.areanote{background:var(--surface);border:1px dashed var(--line);border-radius:10px;padding:10px 12px}
+ul.items{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+li.item{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;align-items:start}
+li.item.hl{border-color:var(--fg)}
+.num{width:30px;height:30px;border-radius:50%;background:var(--c);color:#fff;font-weight:600;font-size:14px;display:grid;place-items:center;border:none;padding:0;font-variant-numeric:tabular-nums}
+.item-body{min-width:0;display:flex;flex-direction:column;gap:3px}
+.item-body h3{font-size:16px;font-weight:600;font-family:var(--body)}
+.item-body p{margin:0}
+.links{display:flex;gap:14px;flex-wrap:wrap;font-size:14px;align-items:center}
+.item-btn{background:none;border:none;padding:0;color:var(--muted);text-decoration:underline;font-size:14px}
+
+details.box{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+details.box summary{cursor:pointer;font-family:var(--display);font-size:20px;font-weight:800;list-style-position:outside}
+details.box ul{margin:10px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+.box2{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.box2 h2{font-size:20px;font-weight:800}
+.box2 p{margin:0}
+footer{color:var(--muted);font-size:13px}
+@media (prefers-reduced-motion:no-preference){ .card{animation:up .18s ease-out} @keyframes up{from{transform:translateY(8px);opacity:.4}to{transform:none;opacity:1}} }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Moja lista dla was</div>
+    <h1>Bangkok i Koh Phangan</h1>
+    <p class="lead">Chłopcy, tu jest wszystko, co musicie zobaczyć, zjeść i przeżyć. Przełączajcie u góry, gdzie akurat jesteście. Każdy punkt na mapie da się kliknąć, a każde miejsce ma link do Map Google. „Musicie” znaczy, że nie ma dyskusji.</p>
+  </header>
+
+  <nav class="switch" aria-label="Gdzie jesteście">
+    <button class="sw" id="sw-bangkok" aria-pressed="true"><b>Bangkok</b><span>3 dni · {{N_BKK}} miejsc</span></button>
+    <button class="sw" id="sw-phangan" aria-pressed="false"><b>Koh Phangan</b><span>4 dni · {{N_PHP}} miejsc</span></button>
+  </nav>
+
+  <div class="notes">
+    <div class="note key">
+      <h2>Dojazd na Koh Phangan</h2>
+      <ul>
+        <li>Z Bangkoku lecicie samolotem na <strong>Koh Samui</strong>, a z Samui płyniecie promem na Phangan.</li>
+        <li><strong>Na Samui się nie zatrzymujcie.</strong> Z lotniska prosto do portu i od razu na Phangan, tam czeka większość moich polecajek.</li>
+        <li><strong>Prom powrotny z Phangan na Samui zarezerwujcie wcześniej</strong>, na dzień wylotu i z zapasem czasu. To jest ważne!</li>
+      </ul>
+    </div>
+    <div class="note">
+      <h2>Jedzenie: zasady</h2>
+      <ul>
+        <li><strong>Nie bójcie się jeść z budek na ulicy.</strong> Tam jest najlepsze jedzenie.</li>
+        <li><strong>Mango sticky rice</strong> jedzcie bez zawahania. Oczywiście.</li>
+        <li>Spróbujcie <strong>Thai tea</strong>. Ja ją kocham, ale to strasznie słodkie dziadostwo. Mniej cukru: „waan noi”.</li>
+        <li>Wybierajcie budki z kolejką lokalsów. Wodę pijcie z butelki.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- BANGKOK -->
+  <section class="view" id="view-bangkok" aria-labelledby="h-bkk">
+    <div class="vhead"><h2 id="h-bkk">Bangkok</h2><p>Stare miasto ze świątyniami, centrum z parkiem i zakupami, a na północy targ i muzeum.</p></div>
+    <div class="controls">
+      <div class="row-label">Część miasta</div>
+      <div class="row areas" role="group" aria-label="Część miasta"></div>
+      <div class="row-label">Co pokazać</div>
+      <div class="row cats" role="group" aria-label="Co pokazać"></div>
+    </div>
+    <div class="mapframe bkk">
+      <svg class="map" viewBox="0 0 993 1089" style="aspect-ratio:993/1089" role="img" aria-label="Mapa Bangkoku z polecanymi miejscami">
+        <rect x="-3000" y="-3000" width="7000" height="7000" fill="var(--city)"/>
+        <path class="river" d="{{RIVER}}"/>
+        <g class="labels"></g>
+        <g class="pins"></g>
+      </svg>
+    </div>
+    <div class="card" hidden></div>
+    <p class="hint">Kliknijcie numer na mapie, żeby zobaczyć opis. „Część miasta” przybliża mapę.</p>
+    <section class="plan">
+      <header><h2>Plan na 3 dni</h2><p>Ułóżcie to tak, żeby dzień 3 wypadł w sobotę albo w niedzielę, bo wtedy działa Chatuchak. W największym upale, ok. 13–16, schowajcie się w hotelu albo w klimatyzowanym centrum.</p></header>
+      <div class="days"></div>
+    </section>
+    <div class="list"></div>
+  </section>
+
+  <!-- KOH PHANGAN -->
+  <section class="view" id="view-phangan" aria-labelledby="h-php" hidden>
+    <div class="vhead"><h2 id="h-php">Koh Phangan</h2><p>Moje miejscówki na wyspie, plaże, zachody słońca i Muay Thai.</p></div>
+    <div class="note">
+      <h2><span class="swatch" aria-hidden="true"></span>Gdzie spać</h2>
+      <p>Po lewej stronie wyspy, w żółtym pasie: Haad Yao, Srithanu, Hin Kong, Wok Tum, Thong Sala albo Ban Tai. Tam są moje miejscówki, najładniejsze zachody słońca i blisko do portu.</p>
+    </div>
+    <div class="note key">
+      <h2>Skutery</h2>
+      <p>Skutery bierzcie z <strong>Pakapao Motorbike For Rent</strong>. Napiszcie do nich <strong>dzień albo dwa dni wcześniej</strong>, że chcecie skutery.</p>
+      <p style="margin-top:6px">Telefon: <strong style="user-select:all">+66 82 729 5604</strong> · <a href="https://wa.me/66827295604" target="_blank" rel="noopener">napisz na WhatsAppie</a></p>
+    </div>
+    <div class="controls">
+      <div class="row-label">Część wyspy</div>
+      <div class="row areas" role="group" aria-label="Część wyspy"></div>
+      <div class="row-label">Co pokazać</div>
+      <div class="row cats" role="group" aria-label="Co pokazać"></div>
+    </div>
+    <div class="mapframe php">
+      <svg class="map" viewBox="0 0 1005 930" style="aspect-ratio:1005/930" role="img" aria-label="Mapa Koh Phangan z polecanymi miejscami">
+        <defs><clipPath id="clip-php"><path d="{{PATH}}"/></clipPath></defs>
+        <rect x="-2000" y="-2000" width="5000" height="5000" fill="var(--sea)"/>
+        <path class="coast" d="{{PATH}}"/>
+        <path class="island" d="{{PATH}}"/>
+        <path class="zone" clip-path="url(#clip-php)" d="{{ZONE}}" stroke-width="95"/>
+        <g class="labels"></g>
+        <g class="pins"></g>
+      </svg>
+    </div>
+    <div class="card" hidden></div>
+    <p class="hint">Kliknijcie numer na mapie, żeby zobaczyć opis. „Część wyspy” przybliża mapę.</p>
+    <section class="plan">
+      <header><h2>Plan na 4 dni</h2><p>Moja propozycja, jak to wszystko poukładać. Kliknijcie numer, żeby zobaczyć miejsce na mapie.</p></header>
+      <div class="days"></div>
+      <p class="extra"></p>
+    </section>
+    <div class="box2">
+      <h2>Walki Muay Thai</h2>
+      <p>Na Phanganie walki są codziennie. Gdzie i kiedy, znajdziecie na Instagramie <a href="https://www.instagram.com/koh_phangan_live" target="_blank" rel="noopener">@koh_phangan_live</a>, publikują tam plakaty. Na galę po prostu jedziecie i kupujecie bilet przed wejściem. <strong>Musicie iść na walkę, na której walczą amatorzy, to jest zajebiste.</strong></p>
+    </div>
+    <div class="list"></div>
+    <details class="box">
+      <summary>Kratom: jakby chcieli spróbować</summary>
+      <ul>
+        <li>Gdzie kupić: napiszcie do mnie, to wam powiem.</li>
+        <li><strong>Nie łączcie z antydepresantami.</strong> Ani z alkoholem, lekami uspokajającymi czy czymkolwiek innym.</li>
+        <li>Co to jest: liście tajskiego drzewa <em>Mitragyna speciosa</em>, spokrewnionego z kawą. Rolnicy w Tajlandii od wieków żują je albo piją jako herbatę, żeby mieć siłę do pracy. Związki z liści działają między innymi na te same receptory w mózgu co opioidy, tylko dużo słabiej.</li>
+        <li>Mała ilość pobudza, trochę jak mocna kawa. Większa rozluźnia, uspokaja, daje lekką euforię, ale też senność.</li>
+        <li>Może wywołać mdłości i wymioty (zwłaszcza po większej ilości albo w upale), zawroty głowy, odwodnienie i zaparcia. Brany regularnie uzależnia.</li>
+        <li>Zacznijcie od małej ilości i odczekajcie. Pijcie dużo wody. Po kratomie nie wsiadajcie na skuter.</li>
+        <li>W Tajlandii jest legalny od 18 lat. <strong>Nie zabierajcie go do Polski</strong>: tu jest na liście substancji kontrolowanych, a z Tajlandii nie wolno go wywozić bez zgody.</li>
+      </ul>
+    </details>
+  </section>
+
+  <footer>Położenie miejsc sprawdzone w Mapach Google i OpenStreetMap, listopad 2026. Godziny otwarcia i ceny sprawdźcie na miejscu.</footer>
+</div>
+
+<script>
+const DATA = {{DATA}};
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const NS = "http://www.w3.org/2000/svg";
+function esc(s){ return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+function rich(s){
+  return esc(s).replace(/https?:\/\/[^\s<]+[^\s<.,;:)]/g, u=>`<a href="${u}" target="_blank" rel="noopener">${u.replace(/^https?:\/\/(www\.)?/,'')}</a>`)
+    .replace(/(^|\s)@koh_phangan_live/g,'$1<a href="https://www.instagram.com/koh_phangan_live" target="_blank" rel="noopener">@koh_phangan_live</a>');
+}
+
+function setupGuide(key){
+  const C = DATA[key], root = document.getElementById('view-'+key);
+  const q = s => root.querySelector(s);
+  const svg = q('svg.map'), pinsG = q('.pins'), labelsG = q('.labels'), card = q('.card'), mapframe = q('.mapframe');
+  const FULL = C.full.slice(), AR = FULL[2]/FULL[3];
+  const st = {area:'all', cat:'all', sel:null};
+  let vb = FULL.slice();
+  const catName = Object.fromEntries(C.cats.map(c=>[c.id,c.name]));
+  C.places.forEach((p,i)=>{ p.n=i+1; });
+  const byName = Object.fromEntries(C.places.map(p=>[p.name,p]));
+
+  [{id:'all',name:C.allName}, ...C.areas].forEach(a=>{
+    const b=document.createElement('button'); b.className='tab'; b.dataset.id=a.id; b.textContent=a.name;
+    b.setAttribute('aria-pressed', a.id==='all'); b.onclick=()=>setArea(a.id); q('.areas').appendChild(b);
+  });
+  [{id:'all',name:'Wszystko'}, ...C.cats].forEach(c=>{
+    const b=document.createElement('button'); b.className='chip'; b.dataset.id=c.id;
+    if(c.id!=='all'){ const d=document.createElement('span'); d.className='dot'; d.style.setProperty('--c',`var(--c-${c.col})`); b.appendChild(d); }
+    b.appendChild(document.createTextNode(c.name));
+    b.setAttribute('aria-pressed', c.id==='all'); b.onclick=()=>setCat(c.id); q('.cats').appendChild(b);
+  });
+  const colOf = id => (C.cats.find(c=>c.id===id)||{col:'prom'}).col;
+
+  const labelEls = C.labels.map(([t,x,y,cls])=>{
+    const e=document.createElementNS(NS,'text'); e.setAttribute('class','lbl'+(cls?' '+cls:'')); e.setAttribute('x',x); e.setAttribute('y',y);
+    e.setAttribute('text-anchor','middle'); e.textContent=t; labelsG.appendChild(e); return e;
+  });
+  const pinEls = C.places.map(p=>{
+    const g=document.createElementNS(NS,'g'); g.setAttribute('class','pin'); g.setAttribute('tabindex','0');
+    g.setAttribute('role','button'); g.setAttribute('aria-label', p.n+'. '+p.name);
+    g.innerHTML=`<circle class="ring" cx="${p.x}" cy="${p.y}"/><circle class="b" cx="${p.x}" cy="${p.y}" fill="var(--c-${colOf(p.cat)})"/><text x="${p.x}" y="${p.y}">${p.n}</text>`;
+    g.addEventListener('click', e=>{ e.stopPropagation(); select(p.n); });
+    g.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); select(p.n);} });
+    pinsG.appendChild(g); return g;
+  });
+  svg.addEventListener('click', ()=>select(null));
+
+  function sizePins(){
+    const w=vb[2], r=w*0.021, f=w*0.022, lf=w*0.024;
+    pinEls.forEach(g=>{ const [ring,b,t]=g.children;
+      ring.setAttribute('r', r*1.55); ring.setAttribute('stroke-width', w*0.005);
+      b.setAttribute('r', r); b.setAttribute('stroke-width', w*0.004); t.setAttribute('font-size', f); });
+    labelEls.forEach(e=>{ e.setAttribute('font-size', lf); e.style.strokeWidth=(w*0.006)+'px'; });
+  }
+  function applyVB(){ svg.setAttribute('viewBox', vb.map(v=>v.toFixed(1)).join(' ')); sizePins(); }
+  function areaBox(id){
+    if(id==='all') return FULL.slice();
+    const ps=C.places.filter(p=>p.area===id);
+    const xs=ps.map(p=>p.x), ys=ps.map(p=>p.y);
+    let x0=Math.min(...xs), x1=Math.max(...xs), y0=Math.min(...ys), y1=Math.max(...ys);
+    let w=Math.max(x1-x0,180)*1.7, h=Math.max(y1-y0,160)*1.7;
+    if(w/h>AR) h=w/AR; else w=h*AR;
+    return [(x0+x1)/2-w/2, (y0+y1)/2-h/2, w, h];
+  }
+  function animateTo(target){
+    if(reduce){ vb=target; applyVB(); return; }
+    const from=vb.slice(), t0=performance.now(), D=420;
+    function step(t){ const k=Math.min(1,(t-t0)/D), e=1-Math.pow(1-k,3);
+      vb=from.map((v,i)=>v+(target[i]-v)*e); applyVB(); if(k<1) requestAnimationFrame(step); }
+    requestAnimationFrame(step);
+  }
+  function setArea(id){
+    st.area=id; root.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-pressed', b.dataset.id===id));
+    animateTo(areaBox(id)); select(null); renderList();
+  }
+  function setCat(id){
+    st.cat=id; root.querySelectorAll('.chip').forEach(b=>b.setAttribute('aria-pressed', b.dataset.id===id));
+    C.places.forEach((p,i)=>pinEls[i].classList.toggle('off', id!=='all' && p.cat!==id));
+    if(st.sel && id!=='all' && C.places[st.sel-1].cat!==id) select(null);
+    renderList();
+  }
+  function moreLinks(p){ return p.more ? `<div class="more">${p.more.map(m=>`<a href="${m.url}" target="_blank" rel="noopener">${esc(m.label)}</a>`).join('')}</div>` : ''; }
+  function select(n){
+    st.sel=n;
+    pinEls.forEach((g,i)=>g.classList.toggle('sel', i+1===n));
+    root.querySelectorAll('li.item').forEach(li=>li.classList.toggle('hl', +li.dataset.n===n));
+    if(!n){ card.hidden=true; return; }
+    const p=C.places[n-1];
+    card.innerHTML=`<button class="close" aria-label="Zamknij">×</button>
+      <div class="meta"><span class="cat" style="--c:var(--c-${colOf(p.cat)})">${n}. ${esc(catName[p.cat]||'')}</span>${p.must?'<span class="must">Musicie</span>':''}</div>
+      <h3>${esc(p.name)}</h3><p>${rich(p.text)}</p>${moreLinks(p)}
+      <a class="go" href="${p.url}" target="_blank" rel="noopener">Otwórz w Mapach Google →</a>`;
+    card.querySelector('.close').onclick=e=>{ e.stopPropagation(); select(null); };
+    card.hidden=false;
+    card.scrollIntoView({block:'nearest', behavior: reduce?'auto':'smooth'});
+    pinsG.appendChild(pinEls[n-1]);
+  }
+  card.addEventListener('click', e=>e.stopPropagation());
+  function showOnMap(p){
+    if(st.cat!=='all' && p.cat!==st.cat) setCat('all');
+    if(st.area!=='all' && st.area!==p.area) setArea('all');
+    select(p.n); mapframe.scrollIntoView({behavior: reduce?'auto':'smooth', block:'start'});
+  }
+  function renderList(){
+    const list=q('.list'); list.innerHTML='';
+    C.areas.forEach(a=>{
+      if(st.area!=='all' && st.area!==a.id) return;
+      const ps=C.places.filter(p=>p.area===a.id && (st.cat==='all'||p.cat===st.cat));
+      if(!ps.length) return;
+      const s=document.createElement('section'); s.className='area';
+      s.innerHTML=`<header><h2>${esc(a.name)}</h2><p>${esc(a.sub)}</p></header>`+
+        (a.warn ? `<div class="warn">${rich(a.warn)}</div>` : '')+
+        (a.note && st.cat==='all' ? `<div class="areanote">${rich(a.note)}</div>` : '');
+      const ul=document.createElement('ul'); ul.className='items';
+      ps.forEach(p=>{
+        const li=document.createElement('li'); li.className='item'; li.dataset.n=p.n; li.style.setProperty('--c',`var(--c-${colOf(p.cat)})`);
+        if(st.sel===p.n) li.classList.add('hl');
+        li.innerHTML=`<button class="num" aria-label="Pokaż ${esc(p.name)} na mapie">${p.n}</button>
+          <div class="item-body"><div class="meta"><span class="cat">${esc(catName[p.cat]||'')}</span>${p.must?'<span class="must">Musicie</span>':''}</div>
+          <h3>${esc(p.name)}</h3><p>${rich(p.text)}</p>${moreLinks(p)}
+          <div class="links"><a class="go" href="${p.url}" target="_blank" rel="noopener">Mapy Google →</a><button class="item-btn">Pokaż na mapie</button></div></div>`;
+        li.querySelector('.num').onclick=()=>showOnMap(p); li.querySelector('.item-btn').onclick=()=>showOnMap(p);
+        ul.appendChild(li);
+      });
+      s.appendChild(ul); list.appendChild(s);
+    });
+  }
+  function renderPlan(){
+    const days=q('.days');
+    C.plan.forEach(d=>{
+      const el=document.createElement('article'); el.className='day';
+      el.innerHTML=`<div class="dl">${esc(d.day)}</div><h3>${esc(d.title)}</h3>`;
+      const ol=document.createElement('ol');
+      d.steps.forEach(s=>{
+        const ps=[].concat(s.p||[]).map(n=>byName[n]).filter(Boolean);
+        const li=document.createElement('li');
+        const nums=ps.length ? `<div class="nums">${ps.map(p=>`<button class="num" style="--c:var(--c-${colOf(p.cat)})" data-n="${p.n}" aria-label="Pokaż ${esc(p.name)} na mapie">${p.n}</button>`).join('')}</div>` : `<span class="dot0" aria-hidden="true">•</span>`;
+        li.innerHTML=`${nums}<span>${rich(s.t)}</span>`;
+        li.querySelectorAll('button.num').forEach(b=>b.onclick=()=>showOnMap(C.places[+b.dataset.n-1]));
+        ol.appendChild(li);
+      });
+      el.appendChild(ol); days.appendChild(el);
+    });
+    const ex=q('.extra'); if(ex) ex.innerHTML=rich(C.plan_extra||'');
+  }
+  applyVB(); renderList(); renderPlan();
+}
+setupGuide('bangkok'); setupGuide('phangan');
+
+const VIEWS=['bangkok','phangan'];
+function show(v, push){
+  if(!VIEWS.includes(v)) v='bangkok';
+  VIEWS.forEach(k=>{ document.getElementById('view-'+k).hidden = k!==v; document.getElementById('sw-'+k).setAttribute('aria-pressed', k===v); });
+  if(push && location.hash!=='#'+v){ try{ history.replaceState(null,'','#'+v); }catch(e){ location.hash=v; } }
+}
+VIEWS.forEach(k=>document.getElementById('sw-'+k).addEventListener('click',()=>{ show(k,true); document.getElementById('view-'+k).scrollIntoView({behavior: reduce?'auto':'smooth', block:'start'}); }));
+window.addEventListener('hashchange',()=>show(location.hash.slice(1)));
+show(location.hash.slice(1));
+</script>

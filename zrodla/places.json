@@ -1,0 +1,501 @@
+{
+ "areas": [
+  {
+   "id": "zachod",
+   "name": "Haad Yao i Srithanu",
+   "sub": "zachodnie wybrzeże: zachody słońca, kawa, najlepsze kolacje",
+   "note": ""
+  },
+  {
+   "id": "thongsala",
+   "name": "Thong Sala i Nai Wok",
+   "sub": "port, centrum wyspy, plaże na dzień",
+   "note": ""
+  },
+  {
+   "id": "bantai",
+   "name": "Ban Tai",
+   "sub": "południe: widoki na zachód słońca, masaż, siłka",
+   "note": ""
+  },
+  {
+   "id": "haadrin",
+   "name": "Za Haad Rin",
+   "sub": "południowo-wschodni cypel",
+   "note": ""
+  },
+  {
+   "id": "polnoc",
+   "name": "Chaloklum",
+   "sub": "północ wyspy: wypad na cały dzień",
+   "note": ""
+  }
+ ],
+ "places": [
+  {
+   "area": "zachod",
+   "cat": "plaze",
+   "must": true,
+   "name": "Zen Beach",
+   "lat": 9.7577607,
+   "lng": 99.961105,
+   "text": "Koniecznie na zachód słońca, ale też w dzień na opalanie. Jak pójdziecie w prawo, jest plaża nudystów.",
+   "url": "https://maps.google.com/?cid=9295405370379873463"
+  },
+  {
+   "area": "zachod",
+   "cat": "plaze",
+   "must": true,
+   "name": "Nang Sabai",
+   "lat": 9.7768322,
+   "lng": 99.96707,
+   "text": "Na zachód słońca i na chill w ciągu dnia. Basen, leżaki, palmy. Życie tam jest lepsze.",
+   "url": "https://maps.app.goo.gl/MUW924T7r7ThGRAA6"
+  },
+  {
+   "area": "zachod",
+   "cat": "jedzenie",
+   "must": true,
+   "name": "Thai Element",
+   "lat": 9.7533377,
+   "lng": 99.9684628,
+   "text": "Najlepsza knajpa. Top: beef Massaman curry. Otwarte wieczorami, we wtorki zamknięte. Lepiej zarezerwować.",
+   "url": "https://maps.google.com/?cid=8587953832893323101"
+  },
+  {
+   "area": "zachod",
+   "cat": "jedzenie",
+   "must": true,
+   "name": "Ann Restaurant",
+   "lat": 9.7540177,
+   "lng": 99.9659752,
+   "text": "Wszystko dobre, ale KHAO SOI tutaj rozpierdala.",
+   "url": "https://maps.app.goo.gl/7ZWKV7XCdXETDfM26"
+  },
+  {
+   "area": "zachod",
+   "cat": "jedzenie",
+   "must": false,
+   "name": "Satipot Persian Experience",
+   "lat": 9.7493671,
+   "lng": 99.9762331,
+   "text": "Pyszna szama.",
+   "url": "https://maps.google.com/?cid=7886653533531602684"
+  },
+  {
+   "area": "zachod",
+   "cat": "jedzenie",
+   "must": false,
+   "name": "Mama Kop",
+   "lat": 9.760756,
+   "lng": 99.966137,
+   "text": "Dobre jedzonko.",
+   "url": "https://maps.app.goo.gl/x34Fc6jSxo2Qy6Td6"
+  },
+  {
+   "area": "zachod",
+   "cat": "jedzenie",
+   "must": false,
+   "name": "Sticky Island Cafe",
+   "lat": 9.7532138,
+   "lng": 99.9745131,
+   "text": "Też git miejsce na jedzenie.",
+   "url": "https://maps.google.com/?cid=8004650165387397942"
+  },
+  {
+   "area": "zachod",
+   "cat": "kawa",
+   "must": true,
+   "name": "Bubba's Roastery",
+   "lat": 9.7745094,
+   "lng": 99.9674955,
+   "text": "Top śniadanie. To ich palarnia kawy przy Haad Yao. Druga kawiarnia jest w Ban Tai.",
+   "url": "https://maps.google.com/?cid=190494508881229004"
+  },
+  {
+   "area": "zachod",
+   "cat": "kawa",
+   "must": false,
+   "name": "Piratenbar",
+   "lat": 9.7721237,
+   "lng": 99.9615778,
+   "text": "Fajny spot na kawę.",
+   "url": "https://maps.app.goo.gl/oA5nU4HUq3yRT8Z69"
+  },
+  {
+   "area": "zachod",
+   "cat": "kawa",
+   "must": false,
+   "name": "Pura Vida Beach",
+   "lat": 9.7455375,
+   "lng": 99.9760469,
+   "text": "Śniadania na plaży.",
+   "url": "https://maps.app.goo.gl/iczik36DvZipMorK9"
+  },
+  {
+   "area": "zachod",
+   "cat": "kawa",
+   "must": true,
+   "name": "Deli Devi",
+   "lat": 9.7509775,
+   "lng": 99.978185,
+   "text": "TOP açaí bowl!!! TOP, TOP, TOP.",
+   "url": "https://maps.app.goo.gl/vMSDdRDKR3Q9J9oK9"
+  },
+  {
+   "area": "zachod",
+   "cat": "jedzenie",
+   "must": false,
+   "name": "Mama Market (market w Srithanu)",
+   "lat": 9.7585157,
+   "lng": 99.9659981,
+   "text": "Cały market jest teraz fajny i odpimpowany. Otwarty co wieczór od ok. 16:00, przejdźcie się na kolację.",
+   "url": "https://maps.google.com/?cid=18237177933592445618"
+  },
+  {
+   "area": "zachod",
+   "cat": "wellness",
+   "must": true,
+   "name": "Xantiva Health Club",
+   "lat": 9.7507484,
+   "lng": 99.9734707,
+   "text": "Sauna + ice bath. Raj na ziemi, koniecznie do zrobienia.",
+   "url": "https://maps.app.goo.gl/woh4YqTBnj3xC6vo8"
+  },
+  {
+   "area": "zachod",
+   "cat": "wellness",
+   "must": true,
+   "name": "Orion Healing",
+   "lat": 9.751892,
+   "lng": 99.966052,
+   "text": "Tutaj na jogę. Zajebisty spot.",
+   "url": "https://maps.app.goo.gl/x9azJ4e9X7Z7PSTK7"
+  },
+  {
+   "area": "thongsala",
+   "cat": "prom",
+   "must": false,
+   "name": "Port Thong Sala",
+   "lat": 9.709001,
+   "lng": 99.984189,
+   "text": "Tu przypływa większość promów z Koh Samui. Prom powrotny na Samui zarezerwujcie wcześniej, na dzień wylotu z zapasem czasu.",
+   "url": "https://maps.google.com/?cid=15511786759845845019"
+  },
+  {
+   "area": "thongsala",
+   "cat": "plaze",
+   "must": false,
+   "name": "Amsterdam Bar",
+   "lat": 9.724728,
+   "lng": 99.9788598,
+   "text": "Na zachód słońca.",
+   "url": "https://maps.app.goo.gl/nbFz9E12DbXLwkWa9"
+  },
+  {
+   "area": "thongsala",
+   "cat": "plaze",
+   "must": false,
+   "name": "Siam Cookies Cottage",
+   "lat": 9.723008,
+   "lng": 99.976746,
+   "text": "Fajna knajpa na plaży, taka na dzień. Obok jest ładna plaża, na której nie ma ludzi.",
+   "url": "https://maps.app.goo.gl/XrDYxrWeocDksc3XA"
+  },
+  {
+   "area": "thongsala",
+   "cat": "jedzenie",
+   "must": false,
+   "name": "MYTHAI BURGERS Thong Sala",
+   "lat": 9.7087313,
+   "lng": 99.9976869,
+   "text": "Mój ulubiony burger, jakbyście mieli ochotę zjeść coś innego. Druga lokalizacja jest w Chaloklum.",
+   "url": "https://maps.google.com/?cid=2370065452052924189"
+  },
+  {
+   "area": "thongsala",
+   "cat": "sport",
+   "must": false,
+   "name": "Martial Arts Academy",
+   "lat": 9.7359575,
+   "lng": 99.9802079,
+   "text": "Druga siłownia Muay Thai, ale w drugiej kolejności: najpierw idźcie do Rittisak, a tu dopiero potem.",
+   "url": "https://maps.app.goo.gl/kcCezkfVVhTHBCR78"
+  },
+  {
+   "area": "thongsala",
+   "cat": "impreza",
+   "must": false,
+   "name": "Bluerama",
+   "lat": 9.721345,
+   "lng": 99.980263,
+   "text": "Imprezka w sobotę w dzień.",
+   "url": "https://maps.app.goo.gl/ENwo1Yk3siJropA37"
+  },
+  {
+   "area": "thongsala",
+   "cat": "jedzenie",
+   "must": true,
+   "name": "Grilled Fish Miang",
+   "lat": 9.7180809,
+   "lng": 99.9997819,
+   "text": "Tu jest dojebana rybka! Grillowana ryba, którą zawija się w liście sałaty z makaronem, ziołami i sosem.",
+   "url": "https://maps.google.com/?cid=12895149910782977758"
+  },
+  {
+   "area": "thongsala",
+   "cat": "jedzenie",
+   "must": true,
+   "name": "Uncle Teum's Duck Noodle",
+   "lat": 9.7258129,
+   "lng": 100.0004882,
+   "text": "Tu jest dojebana kaczka. Lokalna knajpa: tanio, duże porcje, w środku staw z wodospadem.",
+   "url": "https://maps.google.com/?cid=11323638634923299137"
+  },
+  {
+   "area": "thongsala",
+   "cat": "kawa",
+   "must": true,
+   "name": "Common Grounds Coffee",
+   "lat": 9.7391152,
+   "lng": 99.9903906,
+   "text": "Zajebisty spot na śniadanie.",
+   "url": "https://maps.google.com/?cid=8791151036059895016"
+  },
+  {
+   "area": "bantai",
+   "cat": "plaze",
+   "must": false,
+   "name": "Secret Mountain",
+   "lat": 9.721418,
+   "lng": 100.01441,
+   "text": "Ładnie na zachód słońca. Bar na wzgórzu z widokiem na Samui, basen za opłatą. Droga stroma: jeśli pijecie, weźcie taksówkę.",
+   "url": "https://maps.google.com/?cid=9692026732218417095"
+  },
+  {
+   "area": "bantai",
+   "cat": "plaze",
+   "must": false,
+   "name": "Apichada View Point",
+   "lat": 9.706306,
+   "lng": 100.03966,
+   "text": "Widoczek śliczny. Bar z widokiem na Samui, zwykle bez tłumów. Droga stroma i wyboista.",
+   "url": "https://maps.google.com/?cid=3309105644910614937"
+  },
+  {
+   "area": "bantai",
+   "cat": "wellness",
+   "must": true,
+   "name": "Lavella Spa",
+   "lat": 9.7054378,
+   "lng": 100.0102091,
+   "text": "Masaż tylko tu.",
+   "url": "https://maps.app.goo.gl/n2R5sqv9m4FEv2Dw9"
+  },
+  {
+   "area": "bantai",
+   "cat": "kawa",
+   "must": false,
+   "name": "Bubba's Coffee Baan Tai",
+   "lat": 9.7003333,
+   "lng": 100.0206323,
+   "text": "Top śniadanie, druga lokalizacja Bubba's. To ich pierwsza, oryginalna kawiarnia.",
+   "url": "https://maps.google.com/?cid=1568767918401778018"
+  },
+  {
+   "area": "bantai",
+   "cat": "sport",
+   "must": false,
+   "name": "WILD WOOD Beach Fitness",
+   "lat": 9.698831,
+   "lng": 100.0222877,
+   "text": "Siłka z ciężarami z drewna, przy plaży.",
+   "url": "https://maps.app.goo.gl/EeaVixMQoannLp1J6"
+  },
+  {
+   "area": "haadrin",
+   "cat": "jedzenie",
+   "must": false,
+   "name": "Grand View Café & Bar",
+   "lat": 9.6831942,
+   "lng": 100.0554605,
+   "text": "Nowe miejsce w starym hotelu stylizowanym na świątynię.",
+   "url": "https://maps.app.goo.gl/4ih15rdyZrJKZyxH8"
+  },
+  {
+   "area": "polnoc",
+   "cat": "plaze",
+   "must": true,
+   "name": "Malibu Beach",
+   "lat": 9.7898115,
+   "lng": 100.0009877,
+   "text": "Moja ukochana plaża, najlepsza na świecie. Koniecznie musicie tam iść.",
+   "url": "https://maps.google.com/?cid=16926728062172875224"
+  },
+  {
+   "area": "polnoc",
+   "cat": "jedzenie",
+   "must": false,
+   "name": "Kaif",
+   "lat": 9.7867236,
+   "lng": 100.0038719,
+   "text": "Świetne jedzenie przy plaży. Jest tuż obok Malibu Beach, więc idealnie na obiad tego samego dnia.",
+   "url": "https://maps.google.com/?cid=18338961306205525169"
+  },
+  {
+   "area": "polnoc",
+   "cat": "jedzenie",
+   "must": false,
+   "name": "Cucina Italiana",
+   "lat": 9.7865619,
+   "lng": 100.0046005,
+   "text": "Tu jest przepyszne włoskie jedzenie. Tuż obok Kaif i Malibu Beach.",
+   "url": "https://maps.app.goo.gl/N1ADnGhvHTDGSitz5"
+  },
+  {
+   "area": "polnoc",
+   "cat": "sport",
+   "must": false,
+   "name": "Rittisak Muay Thai",
+   "lat": 9.780426,
+   "lng": 100.0074603,
+   "text": "Tu na trening Muay Thai. Właścicielką jest Holly: jak będziecie, pozdrówcie ją ode mnie! Walki są na wyspie codziennie, plakaty z terminami publikuje Instagram @koh_phangan_live. Na galę po prostu jedziecie i kupujecie bilet przed wejściem. Musicie iść na walkę amatorów, to jest zajebiste.",
+   "url": "https://maps.google.com/?cid=4387654990126144504"
+  },
+  {
+   "area": "polnoc",
+   "cat": "jedzenie",
+   "must": false,
+   "name": "MYTHAI BURGERS Chaloklum",
+   "lat": 9.7879231,
+   "lng": 99.997013,
+   "text": "Mój ulubiony burger, jakbyście mieli ochotę zjeść coś innego. Druga lokalizacja jest w Thong Sala.",
+   "url": "https://maps.app.goo.gl/bxiLrBMuZt4wsLwP8"
+  },
+  {
+   "area": "polnoc",
+   "cat": "plaze",
+   "must": false,
+   "name": "Paradise Waterfall",
+   "lat": 9.7784542,
+   "lng": 100.0074388,
+   "text": "Fajny wodospad, można się kąpać. Niedaleko jest najwyższy punkt wyspy, Khao Ra, na który można wejść. Może coś dla Grzesia? W porze suchej wody bywa mało.",
+   "url": "https://maps.google.com/?cid=2911656834660059055"
+  }
+ ],
+ "plan": [
+  {
+   "day": "Dzień 1",
+   "title": "Przyjazd, Srithanu i pierwszy zachód słońca",
+   "steps": [
+    {
+     "t": "Prom z Samui do Thong Sala, zameldowanie i odbiór skuterów z Pakapao (napiszcie do nich dzień albo dwa wcześniej).",
+     "p": "Port Thong Sala"
+    },
+    {
+     "t": "Obiad: dojebana rybka.",
+     "p": "Grilled Fish Miang"
+    },
+    {
+     "t": "Popołudnie i zachód słońca na Zen Beach. Jak pójdziecie w prawo, jest plaża nudystów.",
+     "p": "Zen Beach"
+    },
+    {
+     "t": "Kolacja: khao soi w Ann Restaurant albo Massaman curry w Thai Element (nie we wtorek, zarezerwujcie).",
+     "p": "Ann Restaurant"
+    },
+    {
+     "t": "Na koniec spacer po markecie w Srithanu.",
+     "p": "Mama Market (market w Srithanu)"
+    }
+   ]
+  },
+  {
+   "day": "Dzień 2",
+   "title": "Chill, joga i sauna na zachodzie wyspy",
+   "steps": [
+    {
+     "t": "Śniadanie: TOP açaí bowl w Deli Devi albo śniadanie w Bubba's Roastery.",
+     "p": "Deli Devi"
+    },
+    {
+     "t": "Joga w Orion Healing.",
+     "p": "Orion Healing"
+    },
+    {
+     "t": "Sauna i ice bath w Xantivie. Raj na ziemi.",
+     "p": "Xantiva Health Club"
+    },
+    {
+     "t": "Popołudnie na basenie i leżakach w Nang Sabai, zostańcie na zachód słońca.",
+     "p": "Nang Sabai"
+    },
+    {
+     "t": "Kolacja w Satipot (zarezerwujcie). Zapasowo Mama Kop albo Sticky Island Cafe.",
+     "p": "Satipot Persian Experience"
+    }
+   ]
+  },
+  {
+   "day": "Dzień 3",
+   "title": "Północ: Malibu, Muay Thai i wodospad",
+   "steps": [
+    {
+     "t": "Śniadanie w Common Grounds, po drodze na północ.",
+     "p": "Common Grounds Coffee"
+    },
+    {
+     "t": "Trening w Rittisak. Pozdrówcie Holly ode mnie.",
+     "p": "Rittisak Muay Thai"
+    },
+    {
+     "t": "Malibu Beach, moja ukochana plaża. Zostańcie tam długo.",
+     "p": "Malibu Beach"
+    },
+    {
+     "t": "Obiad w Kaif, tuż przy plaży.",
+     "p": "Kaif"
+    },
+    {
+     "t": "Paradise Waterfall i kąpiel. Grzesiu może iść dalej na Khao Ra.",
+     "p": "Paradise Waterfall"
+    },
+    {
+     "t": "Kolacja: włoskie w Cucina Italiana, potem walka amatorów. Gdzie są walki, sprawdźcie na Instagramie @koh_phangan_live, bilet kupicie przed wejściem.",
+     "p": "Cucina Italiana"
+    }
+   ]
+  },
+  {
+   "day": "Dzień 4",
+   "title": "Południe: siłka, masaż i widoki",
+   "steps": [
+    {
+     "t": "Śniadanie w Bubba's w Baan Tai.",
+     "p": "Bubba's Coffee Baan Tai"
+    },
+    {
+     "t": "Siłka z ciężarami z drewna.",
+     "p": "WILD WOOD Beach Fitness"
+    },
+    {
+     "t": "Masaż w Lavella Spa. Masaż tylko tu.",
+     "p": "Lavella Spa"
+    },
+    {
+     "t": "Obiad: dojebana kaczka u Uncle Teum.",
+     "p": "Uncle Teum's Duck Noodle"
+    },
+    {
+     "t": "Zachód słońca w Secret Mountain albo w Apichada. Jeśli pijecie, weźcie taksówkę.",
+     "p": "Secret Mountain"
+    },
+    {
+     "t": "Prom powrotny na Samui następnego dnia rano, zarezerwowany wcześniej!",
+     "p": "Port Thong Sala"
+    }
+   ]
+  }
+ ],
+ "plan_extra": "Jeśli któryś dzień wypadnie w sobotę, w ciągu dnia idźcie na imprezkę w Bluerama. Jak będziecie chcieli drugi trening Muay Thai, po Rittisak idźcie do Martial Arts Academy w Wok Tum. Na zapas, jak zostanie wam czasu: Amsterdam Bar na zachód słońca, Siam Cookies Cottage na plażę bez ludzi, kawa w Piratenbar, śniadanie w Pura Vida, Grand View za Haad Rin, Common Grounds jeszcze raz."
+}
